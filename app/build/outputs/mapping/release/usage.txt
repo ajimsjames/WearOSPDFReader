@@ -19583,7 +19583,6 @@ kotlin.collections.ArraysKt___ArraysJvmKt:
     private static final short[] copyOf(short[],int)
     private static final boolean[] copyOf(boolean[])
     private static final boolean[] copyOf(boolean[],int)
-    public static final byte[] copyOfRange(byte[],int,int)
     public static final char[] copyOfRange(char[],int,int)
     public static final double[] copyOfRange(double[],int,int)
     public static final float[] copyOfRange(float[],int,int)
@@ -36434,6 +36433,7 @@ com.example.wearpdfreader.pdf.PdfRendererManager:
 com.example.wearpdfreader.pdf.PdfTextExtractor:
     public static final com.example.wearpdfreader.pdf.PdfTextExtractor INSTANCE
     static void <clinit>()
+    public static byte[] decompressZlib()
 com.example.wearpdfreader.presentation.ComposableSingletons$PDFExplorerScreenKt$lambda-1$1:
     public static void invoke$51()
 com.example.wearpdfreader.presentation.ComposableSingletons$PDFExplorerScreenKt$lambda-2$1
