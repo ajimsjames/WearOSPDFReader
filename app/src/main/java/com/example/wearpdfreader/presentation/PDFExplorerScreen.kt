@@ -2,6 +2,7 @@ package com.example.wearpdfreader.presentation
 
 import android.net.Uri
 import android.os.Environment
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -42,13 +43,13 @@ fun PDFExplorerScreen(
         )
     }
 
-    var filesList by remember(currentDir) {
-        mutableStateOf(
-            currentDir.listFiles()
-                ?.filter { !it.name.startsWith(".") && (it.isDirectory || it.name.endsWith(".pdf", ignoreCase = true)) }
-                ?.sortedWith(compareBy({ !it.isDirectory }, { it.name.lowercase() }))
-                ?: emptyList()
-        )
+    var refreshTrigger by remember { mutableStateOf(0) }
+
+    val filesList = remember(currentDir, refreshTrigger) {
+        currentDir.listFiles()
+            ?.filter { !it.name.startsWith(".") && (it.isDirectory || it.name.endsWith(".pdf", ignoreCase = true)) }
+            ?.sortedWith(compareBy({ !it.isDirectory }, { it.name.lowercase() }))
+            ?: emptyList()
     }
 
     Box(
@@ -60,7 +61,7 @@ fun PDFExplorerScreen(
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = PaddingValues(vertical = 24.dp)
+            contentPadding = PaddingValues(vertical = 20.dp)
         ) {
             item {
                 Text(
@@ -119,6 +120,32 @@ fun PDFExplorerScreen(
                 }
             }
 
+            // Clear App Docs Button
+            if (currentDir == appFilesDir && filesList.any { !it.isDirectory }) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 6.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(Color(0xFFD32F2F))
+                            .clickable {
+                                appFilesDir.listFiles()?.forEach { file ->
+                                    if (file.name.endsWith(".pdf", ignoreCase = true)) {
+                                        file.delete()
+                                    }
+                                }
+                                Toast.makeText(context, "Cleared App Docs", Toast.LENGTH_SHORT).show()
+                                refreshTrigger++
+                            }
+                            .padding(vertical = 6.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("🗑️ Delete All App Docs", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+
             // Sample PDF Button
             item {
                 Box(
@@ -152,30 +179,58 @@ fun PDFExplorerScreen(
                             .padding(vertical = 3.dp)
                             .clip(RoundedCornerShape(14.dp))
                             .background(if (file.isDirectory) Color(0xFF1E2A38) else Color(0xFF1C1C1E))
-                            .clickable {
-                                if (file.isDirectory) {
-                                    currentDir = file
-                                } else {
-                                    onSelectUri(Uri.fromFile(file))
-                                }
-                            }
                             .padding(horizontal = 12.dp, vertical = 8.dp)
                     ) {
-                        Column {
-                            Text(
-                                text = if (file.isDirectory) "📁 ${file.name}" else "📄 ${file.name}",
-                                color = Color.White,
-                                fontSize = 12.sp,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                            if (!file.isDirectory) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clickable {
+                                        if (file.isDirectory) {
+                                            currentDir = file
+                                        } else {
+                                            onSelectUri(Uri.fromFile(file))
+                                        }
+                                    }
+                            ) {
                                 Text(
-                                    text = "${file.length() / 1024} KB",
-                                    color = Color.Gray,
-                                    fontSize = 10.sp,
-                                    modifier = Modifier.padding(top = 2.dp)
+                                    text = if (file.isDirectory) "📁 ${file.name}" else "📄 ${file.name}",
+                                    color = Color.White,
+                                    fontSize = 12.sp,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
+                                if (!file.isDirectory) {
+                                    Text(
+                                        text = "${file.length() / 1024} KB",
+                                        color = Color.Gray,
+                                        fontSize = 10.sp,
+                                        modifier = Modifier.padding(top = 2.dp)
+                                    )
+                                }
+                            }
+
+                            if (!file.isDirectory) {
+                                Box(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .background(Color(0xFF331111))
+                                        .clickable {
+                                            val name = file.name
+                                            if (file.delete()) {
+                                                Toast.makeText(context, "Deleted $name", Toast.LENGTH_SHORT).show()
+                                                refreshTrigger++
+                                            }
+                                        }
+                                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text("🗑️", fontSize = 12.sp)
+                                }
                             }
                         }
                     }

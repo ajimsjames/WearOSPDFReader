@@ -1152,7 +1152,8 @@ Lo/j;
 HSPLo/j;-><init>(LZ/K;LZ/z;LZ/C;IILo/l;)V
 HSPLo/j;->n(Ljava/lang/Object;)Ljava/lang/Object;
 Lo/k;
-HSPLo/k;-><init>(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;I)V
+HSPLo/k;-><init>([LZ/K;Ljava/util/List;LZ/C;Lv1/q;Lv1/q;Lo/l;)V
+HSPLo/k;->n(Ljava/lang/Object;)Ljava/lang/Object;
 Lo/l;
 HSPLo/l;-><init>(LJ/g;)V
 HSPLo/l;->equals(Ljava/lang/Object;)Z
@@ -1175,7 +1176,7 @@ HSPLo/p;->equals(Ljava/lang/Object;)Z
 HSPLo/p;->hashCode()I
 HSPLo/p;->toString()Ljava/lang/String;
 Lo/q;
-HSPLo/q;-><init>()V
+HSPLo/q;-><init>(LJ/f;)V
 HSPLo/q;->r(ILt0/k;)I
 HSPLo/q;->equals(Ljava/lang/Object;)Z
 HSPLo/q;->hashCode()I
@@ -1237,7 +1238,7 @@ HSPLo/A;->hashCode()I
 HSPLo/A;->toString()Ljava/lang/String;
 Lo/B;
 HSPLo/B;-><clinit>()V
-HSPLo/B;->a(Lo/b;Lx/m;)LZ/A;
+HSPLo/B;->a(Lo/b;LJ/f;Lx/m;)LZ/A;
 Lo/C;
 HSPLo/C;->a()LJ/o;
 Landroidx/compose/foundation/layout/SizeElement;
@@ -2120,8 +2121,6 @@ HSPLx/C0;->b(Ljava/lang/Object;Lo1/e;)Lo1/e;
 HSPLx/C0;->h(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 HSPLx/C0;->r(Ljava/lang/Object;)Ljava/lang/Object;
 Lx/D0;
-HSPLx/D0;-><init>(Lx/F0;Lz/d;Lz/d;Ljava/util/List;Ljava/util/List;Ljava/util/Set;Ljava/util/List;Ljava/util/Set;)V
-HSPLx/D0;->n(Ljava/lang/Object;)Ljava/lang/Object;
 Lx/E0;
 HSPLx/E0;-><init>(Lx/F0;Lo1/e;)V
 HSPLx/E0;->t(Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/Set;Ljava/util/Set;Lz/d;Lz/d;)V
@@ -5872,7 +5871,6 @@ HSPLo/b;->toString()Ljava/lang/String;
 HSPLo/c;->b(I[ILt0/k;[I)V
 HSPLo/c;->toString()Ljava/lang/String;
 HSPLo/h;->n(Ljava/lang/Object;)Ljava/lang/Object;
-HSPLo/k;->n(Ljava/lang/Object;)Ljava/lang/Object;
 HSPLo/r;->n(Ljava/lang/Object;)Ljava/lang/Object;
 HSPLo/r;->a(LZ/J;)V
 HSPLo/E;->e()Ljava/lang/Object;
@@ -5918,6 +5916,8 @@ HSPLx/r;->compare(Ljava/lang/Object;Ljava/lang/Object;)I
 HSPLx/J;-><init>(Lx/K;LF/c;Lh/q;I)V
 HSPLx/J;-><init>(LN/m;LN/e;ILv1/o;)V
 HSPLx/J;->n(Ljava/lang/Object;)Ljava/lang/Object;
+HSPLx/D0;-><init>(Lx/F0;Lz/d;Lz/d;Ljava/util/List;Ljava/util/List;Ljava/util/Set;Ljava/util/List;Ljava/util/Set;)V
+HSPLx/D0;->n(Ljava/lang/Object;)Ljava/lang/Object;
 HSPLz/b;->hasNext()Z
 HSPLz/b;->next()Ljava/lang/Object;
 HSPLz/b;->remove()V
