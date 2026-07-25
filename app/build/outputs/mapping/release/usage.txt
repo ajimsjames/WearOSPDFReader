@@ -17292,8 +17292,6 @@ com.example.wearpdfreader.Screen:
     public static final int $stable
 com.example.wearpdfreader.pdf.PdfFileInfo
 com.example.wearpdfreader.pdf.PdfFileScanner
-com.example.wearpdfreader.pdf.PdfTextExtractor:
-    public static final int $stable
 com.example.wearpdfreader.presentation.ComposableSingletons$PDFListScreenKt$lambda-1$1
 com.example.wearpdfreader.presentation.ComposableSingletons$PDFListScreenKt$lambda-2$1
 com.example.wearpdfreader.presentation.ComposableSingletons$PDFListScreenKt$lambda-3$1
@@ -17317,7 +17315,7 @@ com.example.wearpdfreader.presentation.PDFListScreenKt$PDFListScreen$2
 com.example.wearpdfreader.presentation.PDFListScreenKt$PDFListScreen$3
 com.example.wearpdfreader.presentation.PDFListScreenKt$PDFListScreen$launcher$1$1
 com.example.wearpdfreader.presentation.PDFListScreenKt
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$1$invoke$$inlined$items$default$2
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$2
 com.google.android.gms.actions.ItemListIntents
 com.google.android.gms.actions.NoteIntents
 com.google.android.gms.actions.ReserveIntents
@@ -19583,6 +19581,7 @@ kotlin.collections.ArraysKt___ArraysJvmKt:
     private static final short[] copyOf(short[],int)
     private static final boolean[] copyOf(boolean[])
     private static final boolean[] copyOf(boolean[],int)
+    public static final byte[] copyOfRange(byte[],int,int)
     public static final char[] copyOfRange(char[],int,int)
     public static final double[] copyOfRange(double[],int,int)
     public static final float[] copyOfRange(float[],int,int)
@@ -22296,6 +22295,7 @@ kotlin.io.ByteStreamsKt:
     private static final java.io.ByteArrayInputStream inputStream(byte[])
     private static final java.io.ByteArrayInputStream inputStream(byte[],int,int)
     public static final kotlin.collections.ByteIterator iterator(java.io.BufferedInputStream)
+    public static final byte[] readBytes(java.io.InputStream)
     public static final byte[] readBytes(java.io.InputStream,int)
     public static synthetic byte[] readBytes$default(java.io.InputStream,int,int,java.lang.Object)
     private static final java.io.InputStreamReader reader(java.io.InputStream,java.nio.charset.Charset)
@@ -23690,42 +23690,14 @@ kotlin.text.MatcherMatchResult$groupValues$1
 kotlin.text.MatcherMatchResult$groups$1$iterator$1
 kotlin.text.MatcherMatchResult$groups$1
 kotlin.text.MatcherMatchResult
-kotlin.text.Regex$Companion:
-    public static final synthetic int access$ensureUnicodeCase(kotlin.text.Regex$Companion,int)
-    private final int ensureUnicodeCase(int)
-    public final java.lang.String escape(java.lang.String)
-    public final java.lang.String escapeReplacement(java.lang.String)
-    public final kotlin.text.Regex fromLiteral(java.lang.String)
+kotlin.text.Regex$Companion
 kotlin.text.Regex$Serialized$Companion
 kotlin.text.Regex$Serialized
 kotlin.text.Regex$findAll$1
 kotlin.text.Regex$findAll$2
 kotlin.text.Regex$special$$inlined$fromInt$1
 kotlin.text.Regex$splitToSequence$1
-kotlin.text.Regex:
-    private java.util.Set _options
-    public void <init>(java.lang.String,java.util.Set)
-    public void <init>(java.lang.String,kotlin.text.RegexOption)
-    public static final synthetic java.util.regex.Pattern access$getNativePattern$p(kotlin.text.Regex)
-    public final boolean containsMatchIn(java.lang.CharSequence)
-    public final kotlin.text.MatchResult find(java.lang.CharSequence,int)
-    public static synthetic kotlin.text.MatchResult find$default(kotlin.text.Regex,java.lang.CharSequence,int,int,java.lang.Object)
-    public final kotlin.sequences.Sequence findAll(java.lang.CharSequence,int)
-    public static synthetic kotlin.sequences.Sequence findAll$default(kotlin.text.Regex,java.lang.CharSequence,int,int,java.lang.Object)
-    public final java.util.Set getOptions()
-    public final java.lang.String getPattern()
-    public final kotlin.text.MatchResult matchAt(java.lang.CharSequence,int)
-    public final kotlin.text.MatchResult matchEntire(java.lang.CharSequence)
-    public final boolean matches(java.lang.CharSequence)
-    public final boolean matchesAt(java.lang.CharSequence,int)
-    public final java.lang.String replace(java.lang.CharSequence,kotlin.jvm.functions.Function1)
-    public final java.lang.String replaceFirst(java.lang.CharSequence,java.lang.String)
-    public final java.util.List split(java.lang.CharSequence,int)
-    public static synthetic java.util.List split$default(kotlin.text.Regex,java.lang.CharSequence,int,int,java.lang.Object)
-    public final kotlin.sequences.Sequence splitToSequence(java.lang.CharSequence,int)
-    public static synthetic kotlin.sequences.Sequence splitToSequence$default(kotlin.text.Regex,java.lang.CharSequence,int,int,java.lang.Object)
-    public final java.util.regex.Pattern toPattern()
-    private final java.lang.Object writeReplace()
+kotlin.text.Regex
 kotlin.text.RegexKt$fromInt$1$1
 kotlin.text.RegexKt
 kotlin.text.RegexOption
@@ -26907,7 +26879,7 @@ androidx.compose.animation.core.StartOffset
 androidx.compose.animation.core.StartOffsetType$Companion
 androidx.compose.animation.core.StartOffsetType
 androidx.compose.animation.core.SuspendAnimationKt$animate$3:
-    public final androidx.compose.runtime.DisposableEffectResult invoke(androidx.compose.runtime.DisposableEffectScope)
+    public final androidx.compose.runtime.DisposableEffectResult invoke()
     public final void invoke(androidx.compose.animation.core.AnimationScope)
 androidx.compose.animation.core.SuspendAnimationKt$animate$5:
     public static final androidx.compose.animation.core.SuspendAnimationKt$animate$5 INSTANCE
@@ -27348,7 +27320,7 @@ androidx.compose.foundation.gestures.ContentInViewNode$Request:
     public static kotlin.jvm.functions.Function0 getCurrentBounds()
 androidx.compose.foundation.gestures.ContentInViewNode$WhenMappings
 androidx.compose.foundation.gestures.ContentInViewNode$launchAnimation$2$1$1:
-    public final androidx.compose.runtime.DisposableEffectResult invoke(androidx.compose.runtime.DisposableEffectScope)
+    public final androidx.compose.runtime.DisposableEffectResult invoke()
     public final java.lang.Boolean invoke()
     public static androidx.compose.ui.node.TraversableNode$Companion$TraverseDescendantsAction invoke$1()
     public static void invoke$13()
@@ -32906,6 +32878,7 @@ androidx.compose.ui.platform.AccessibilityIterators$ParagraphTextSegmentIterator
     public static int getAssertive-0phEisY()
     public static int getAsync-PKNRLFQ()
     public static int getBlocking-PKNRLFQ()
+    public static androidx.compose.ui.text.font.FontWeight getBold()
     public static int getBottom-J6kI3mc()
     public static int getButton-o7Vup1c()
     public static int getCenter-J6kI3mc()
@@ -35569,13 +35542,10 @@ androidx.core.util.DebugUtils
 androidx.core.util.LongSparseArrayKt$$InternalSyntheticThrowCCEIfNotNull$15$82e4531fc4d9e2bde9a30d78bbe8aa943f07e5ca78afd2c955868c97d45274e7$0
 androidx.core.util.LongSparseArrayKt$keyIterator$1
 androidx.core.util.LongSparseArrayKt:
-    public static final boolean PDFViewerScreen$lambda$19(androidx.compose.runtime.MutableState)
-    public static final void PDFViewerScreen$lambda$20(androidx.compose.runtime.MutableState,boolean)
     public static final android.graphics.Bitmap PDFViewerScreen$lambda$4(androidx.compose.runtime.MutableState)
     public static final void PDFViewerScreen$lambda$8(androidx.compose.runtime.MutableState,boolean)
     public static final void access$PDFViewerScreen$lambda$17(androidx.compose.runtime.MutableState,boolean)
     public abstract androidx.core.util.LongSparseArrayKt add()
-    public static final void boxInt(int)
     public static void checkArgument(boolean)
     public static void checkNotEmpty(java.lang.String)
     public abstract int commit()
@@ -36404,9 +36374,6 @@ com.example.wearpdfreader.MainActivity:
     static void <clinit>()
 com.example.wearpdfreader.Screen:
     static void <clinit>()
-com.example.wearpdfreader.pdf.PdfRendererManager$extractCurrentPageText$2:
-    public int label
-    public final java.lang.Object invoke$4()
 com.example.wearpdfreader.pdf.PdfRendererManager$hashKey$1
 com.example.wearpdfreader.pdf.PdfRendererManager$memoryCache$1:
     public static void entryRemoved()
@@ -36422,7 +36389,6 @@ com.example.wearpdfreader.pdf.PdfRendererManager$renderPage$2:
 com.example.wearpdfreader.pdf.PdfRendererManager:
     public static final int $stable
     static void <clinit>()
-    public static java.lang.Object extractCurrentPageText()
     public final int getCurrentPageIndex()
     public final int getPageCount()
     public static java.lang.String hashKey()
@@ -36430,10 +36396,6 @@ com.example.wearpdfreader.pdf.PdfRendererManager:
     public final java.lang.Object openPdf(android.net.Uri,kotlin.coroutines.Continuation)
     public static java.lang.Object openSamplePdf()
     public static java.lang.Object renderPage()
-com.example.wearpdfreader.pdf.PdfTextExtractor:
-    public static final com.example.wearpdfreader.pdf.PdfTextExtractor INSTANCE
-    static void <clinit>()
-    public static byte[] decompressZlib()
 com.example.wearpdfreader.presentation.ComposableSingletons$PDFExplorerScreenKt$lambda-1$1:
     public static void invoke$51()
 com.example.wearpdfreader.presentation.ComposableSingletons$PDFExplorerScreenKt$lambda-2$1
@@ -36457,8 +36419,8 @@ com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$1$1
     public static java.lang.Void invoke()
     private static synthetic bridge java.lang.Object invoke$com$example$wearpdfreader$presentation$PDFExplorerScreenKt$PDFExplorerScreen$1$1$invoke$$inlined$items$default$1()
     private static java.lang.Void invoke$com$example$wearpdfreader$presentation$PDFExplorerScreenKt$PDFExplorerScreen$1$1$invoke$$inlined$items$default$1()
-    private static synthetic bridge java.lang.Object invoke$com$example$wearpdfreader$presentation$PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$1$invoke$$inlined$items$default$1()
-    private static java.lang.Void invoke$com$example$wearpdfreader$presentation$PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$1$invoke$$inlined$items$default$1()
+    private static synthetic bridge java.lang.Object invoke$com$example$wearpdfreader$presentation$PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$1()
+    private static java.lang.Void invoke$com$example$wearpdfreader$presentation$PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$1()
 com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$1$1$invoke$$inlined$items$default$3:
     public final java.lang.Object invoke(int)
 com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$1$1$invoke$$inlined$items$default$4:
@@ -36468,41 +36430,35 @@ com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$2
 com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$filesList$2$2
 com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$filesList$2$3
 com.example.wearpdfreader.presentation.PDFExplorerScreenKt
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$1$invoke$$inlined$onDispose$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2:
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$1:
     public int label
     public final java.lang.Object invoke$4()
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$1$1$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$1$1$3
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$1:
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$1$1$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$1$1$3
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$1:
     public static com.example.wearpdfreader.ui.PdfCanvasView invoke()
     public final void invoke$17()
     public static void invoke$52()
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$2$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$2$2
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$2$3
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$2
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$3$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$5$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$6$1$1$1$1:
-    public final java.lang.Object invoke$4()
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$6$1$1$1:
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$2$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$2$2
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$2$3
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$2
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$3$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$5$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$1$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$3$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$5$1$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$5$3$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$7$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$1$1:
     public final void invoke()
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$6$1$1$3$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$6$1$1$5$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$6$1$1$7$1$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$6$1$1$7$3$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$7$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$1$1$1:
-    public final void invoke()
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$1$invoke$$inlined$items$default$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$1$invoke$$inlined$items$default$3
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$1$invoke$$inlined$items$default$4:
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$3
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$4:
     public final void invoke$18()
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$2$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$4
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$2$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3
 com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$loadPage$1:
     public final java.lang.Object invoke$4()
 com.example.wearpdfreader.presentation.PDFViewerScreenKt
@@ -37563,14 +37519,13 @@ kotlin.text.CharsKt__CharJVMKt
 kotlin.text.CharsKt__CharKt
 kotlin.text.Charsets:
     public static final kotlin.text.Charsets INSTANCE
+    public static final java.nio.charset.Charset ISO_8859_1
     public static final java.nio.charset.Charset US_ASCII
     public static final java.nio.charset.Charset UTF_16
     public static final java.nio.charset.Charset UTF_16BE
     public static final java.nio.charset.Charset UTF_16LE
 kotlin.text.DelimitedRangesSequence$iterator$1:
     public static kotlin.ranges.IntRange next()
-kotlin.text.Regex$Companion
-kotlin.text.Regex
 kotlin.text.StringsKt
 kotlin.text.StringsKt__AppendableKt
 kotlin.text.StringsKt__IndentKt$getIndentFunction$1

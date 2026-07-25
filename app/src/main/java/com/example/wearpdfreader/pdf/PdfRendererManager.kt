@@ -10,7 +10,6 @@ import android.util.LruCache
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.security.MessageDigest
 
@@ -18,8 +17,6 @@ class PdfRendererManager(private val context: Context) {
 
     private var parcelFileDescriptor: ParcelFileDescriptor? = null
     private var pdfRenderer: PdfRenderer? = null
-    private var currentFile: File? = null
-    private var currentUri: Uri? = null
     
     var pageCount: Int = 0
         private set
@@ -50,7 +47,6 @@ class PdfRendererManager(private val context: Context) {
                     }
                 }
             }
-            currentFile = sampleFile
             openFileDescriptor(ParcelFileDescriptor.open(sampleFile, ParcelFileDescriptor.MODE_READ_ONLY), "sample.pdf")
         } catch (e: Exception) {
             e.printStackTrace()
@@ -61,12 +57,10 @@ class PdfRendererManager(private val context: Context) {
     suspend fun openPdf(uri: Uri): Boolean = withContext(Dispatchers.IO) {
         try {
             close()
-            currentUri = uri
             val fileKey = uri.toString()
             if (uri.scheme == "file") {
                 val file = File(uri.path ?: "")
                 if (file.exists()) {
-                    currentFile = file
                     val pfd = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
                     return@withContext openFileDescriptor(pfd, file.name)
                 }
@@ -128,27 +122,6 @@ class PdfRendererManager(private val context: Context) {
         }
     }
 
-    suspend fun extractCurrentPageText(): String = withContext(Dispatchers.IO) {
-        try {
-            val stream = when {
-                currentFile != null && currentFile!!.exists() -> FileInputStream(currentFile)
-                currentUri != null -> context.contentResolver.openInputStream(currentUri!!)
-                else -> null
-            }
-            if (stream != null) {
-                stream.use { input ->
-                    val text = PdfTextExtractor.extractText(input)
-                    if (text.isNotBlank()) {
-                        return@withContext text
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return@withContext "Page ${currentPageIndex + 1} of $pageCount"
-    }
-
     fun close() {
         saveCurrentPageBookmark()
         memoryCache.evictAll()
@@ -160,8 +133,6 @@ class PdfRendererManager(private val context: Context) {
         }
         pdfRenderer = null
         parcelFileDescriptor = null
-        currentFile = null
-        currentUri = null
         pageCount = 0
         currentPageIndex = 0
     }
