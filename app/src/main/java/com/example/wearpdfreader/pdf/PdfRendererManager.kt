@@ -1,10 +1,8 @@
 package com.example.wearpdfreader.pdf
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.pdf.PdfDocument
 import android.graphics.pdf.PdfRenderer
 import android.net.Uri
 import android.os.ParcelFileDescriptor
@@ -13,113 +11,142 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
+import java.security.MessageDigest
 
 class PdfRendererManager(private val context: Context) {
-    private var fileDescriptor: ParcelFileDescriptor? = null
+
+    private var parcelFileDescriptor: ParcelFileDescriptor? = null
     private var pdfRenderer: PdfRenderer? = null
+    
+    var pageCount: Int = 0
+        private set
 
-    // Cache high-res rendered pages in memory to eliminate render lag
-    private val maxMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
-    private val cacheSize = maxMemory / 6 // Cache up to ~20MB of high-res bitmaps
-    private val bitmapCache = object : LruCache<Int, Bitmap>(cacheSize) {
-        override fun sizeOf(key: Int, bitmap: Bitmap): Int {
-            return bitmap.byteCount / 1024
-        }
-    }
+    var currentPageIndex: Int = 0
+        private set
 
-    val pageCount: Int
-        get() = pdfRenderer?.pageCount ?: 0
+    private var currentFileKey: String = ""
+    private val prefs: SharedPreferences = context.getSharedPreferences("pdf_bookmarks", Context.MODE_PRIVATE)
 
-    suspend fun openPdf(uri: Uri): Boolean = withContext(Dispatchers.IO) {
-        try {
-            close()
-            fileDescriptor = context.contentResolver.openFileDescriptor(uri, "r")
-            fileDescriptor?.let { pfd ->
-                pdfRenderer = PdfRenderer(pfd)
-                return@withContext true
+    // Memory cache for 1080px rendered bitmaps
+    private val memoryCache: LruCache<Int, Bitmap> = object : LruCache<Int, Bitmap>(16) {
+        override fun entryRemoved(evicted: Boolean, key: Int?, oldValue: Bitmap?, newValue: Bitmap?) {
+            if (evicted && oldValue != null && !oldValue.isRecycled) {
+                oldValue.recycle()
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
-        return@withContext false
     }
 
     suspend fun openSamplePdf(): Boolean = withContext(Dispatchers.IO) {
         try {
             close()
-            val sampleFile = File(context.cacheDir, "sample_doc.pdf")
+            val sampleFile = File(context.cacheDir, "sample.pdf")
             if (!sampleFile.exists()) {
-                val doc = PdfDocument()
-                val pageInfo = PdfDocument.PageInfo.Builder(1080, 1080, 1).create()
-                
-                // Page 1
-                var page = doc.startPage(pageInfo)
-                var canvas = page.canvas
-                canvas.drawColor(Color.WHITE)
-                var paint = Paint().apply {
-                    color = Color.BLACK
-                    textSize = 58f
-                    isAntiAlias = true
-                    isFakeBoldText = true
-                    isSubpixelText = true
+                context.assets.open("sample.pdf").use { input ->
+                    FileOutputStream(sampleFile).use { output ->
+                        input.copyTo(output)
+                    }
                 }
-                canvas.drawText("Galaxy Watch 6 PDF", 90f, 180f, paint)
-                paint.textSize = 42f
-                paint.color = Color.DKGRAY
-                paint.isFakeBoldText = false
-                canvas.drawText("Wear OS 4 Ultra Reader", 90f, 280f, paint)
-                canvas.drawText("• Super-Sampled High-Res Text", 90f, 400f, paint)
-                canvas.drawText("• Crisp Sub-pixel Anti-aliasing", 90f, 500f, paint)
-                canvas.drawText("• Hardware Accelerated Zoom", 90f, 600f, paint)
-                canvas.drawText("• Built-in File Explorer", 90f, 700f, paint)
-                doc.finishPage(page)
-
-                FileOutputStream(sampleFile).use { out ->
-                    doc.writeTo(out)
-                }
-                doc.close()
             }
-            fileDescriptor = ParcelFileDescriptor.open(sampleFile, ParcelFileDescriptor.MODE_READ_ONLY)
-            fileDescriptor?.let { pfd ->
-                pdfRenderer = PdfRenderer(pfd)
-                return@withContext true
+            openFileDescriptor(ParcelFileDescriptor.open(sampleFile, ParcelFileDescriptor.MODE_READ_ONLY), "sample.pdf")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    suspend fun openPdf(uri: Uri): Boolean = withContext(Dispatchers.IO) {
+        try {
+            close()
+            val fileKey = uri.toString()
+            if (uri.scheme == "file") {
+                val file = File(uri.path ?: "")
+                if (file.exists()) {
+                    val pfd = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
+                    return@withContext openFileDescriptor(pfd, file.name)
+                }
+            }
+            val pfd = context.contentResolver.openFileDescriptor(uri, "r")
+            if (pfd != null) {
+                openFileDescriptor(pfd, fileKey)
+            } else {
+                false
             }
         } catch (e: Exception) {
             e.printStackTrace()
+            false
         }
-        return@withContext false
     }
 
-    suspend fun renderPage(pageIndex: Int, targetWidth: Int = 1080): Bitmap? = withContext(Dispatchers.IO) {
-        // Return cached high-res bitmap instantly if available
-        bitmapCache.get(pageIndex)?.let { return@withContext it }
+    private fun openFileDescriptor(pfd: ParcelFileDescriptor, key: String): Boolean {
+        parcelFileDescriptor = pfd
+        pdfRenderer = PdfRenderer(pfd)
+        pageCount = pdfRenderer?.pageCount ?: 0
+        currentFileKey = hashKey(key)
 
-        pdfRenderer?.let { renderer ->
-            if (pageIndex < 0 || pageIndex >= renderer.pageCount) return@withContext null
-            val page = renderer.openPage(pageIndex)
-            
-            // Render at high DPI resolution (1080px width) for super-sampled crisp text
-            val scaleRatio = targetWidth.toFloat() / page.width.toFloat()
-            val targetHeight = (page.height * scaleRatio).toInt()
+        // Auto-Resume last saved page position
+        val savedPage = prefs.getInt("page_$currentFileKey", 0)
+        currentPageIndex = if (savedPage in 0 until pageCount) savedPage else 0
+        return pageCount > 0
+    }
 
-            val bitmap = Bitmap.createBitmap(targetWidth, targetHeight, Bitmap.Config.ARGB_8888)
-            val canvas = android.graphics.Canvas(bitmap)
-            canvas.drawColor(Color.WHITE)
-            page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-            page.close()
-
-            // Save to memory cache
-            bitmapCache.put(pageIndex, bitmap)
-            return@withContext bitmap
+    fun saveCurrentPageBookmark() {
+        if (currentFileKey.isNotEmpty() && pageCount > 0) {
+            prefs.edit().putInt("page_$currentFileKey", currentPageIndex).apply()
         }
-        return@withContext null
+    }
+
+    suspend fun renderPage(pageIndex: Int): Bitmap? = withContext(Dispatchers.IO) {
+        val renderer = pdfRenderer ?: return@withContext null
+        if (pageIndex !in 0 until pageCount) return@withContext null
+
+        currentPageIndex = pageIndex
+        saveCurrentPageBookmark()
+
+        // Check memory cache
+        val cached = memoryCache.get(pageIndex)
+        if (cached != null && !cached.isRecycled) {
+            return@withContext cached
+        }
+
+        try {
+            renderer.openPage(pageIndex).use { page ->
+                // Render at 1080px super-sampled resolution for Galaxy Watch 6 AMOLED display
+                val renderWidth = 1080
+                val renderHeight = (renderWidth * (page.height.toFloat() / page.width.toFloat())).toInt()
+                
+                val bitmap = Bitmap.createBitmap(renderWidth, renderHeight, Bitmap.Config.ARGB_8888)
+                page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+                memoryCache.put(pageIndex, bitmap)
+                bitmap
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
     fun close() {
-        bitmapCache.evictAll()
-        pdfRenderer?.close()
-        fileDescriptor?.close()
+        saveCurrentPageBookmark()
+        memoryCache.evictAll()
+        try {
+            pdfRenderer?.close()
+            parcelFileDescriptor?.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         pdfRenderer = null
-        fileDescriptor = null
+        parcelFileDescriptor = null
+        pageCount = 0
+        currentPageIndex = 0
+    }
+
+    private fun hashKey(key: String): String {
+        return try {
+            val md = MessageDigest.getInstance("MD5")
+            val digest = md.digest(key.toByteArray())
+            digest.joinToString("") { "%02x".format(it) }
+        } catch (e: Exception) {
+            key.hashCode().toString()
+        }
     }
 }

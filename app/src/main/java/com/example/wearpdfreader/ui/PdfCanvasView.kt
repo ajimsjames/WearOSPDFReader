@@ -3,6 +3,8 @@ package com.example.wearpdfreader.ui
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.util.AttributeSet
@@ -21,7 +23,6 @@ class PdfCanvasView @JvmOverloads constructor(
     private val drawMatrix = Matrix()
     private val baseMatrix = Matrix()
     
-    // High Quality Paint with Filter, Anti-Alias, and Dithering for sharp text
     private val paint = Paint().apply {
         isFilterBitmap = true
         isAntiAlias = true
@@ -31,16 +32,32 @@ class PdfCanvasView @JvmOverloads constructor(
     private var scaleFactor = 1.0f
     private var posX = 0f
     private var posY = 0f
+    private var isNightMode = false
+
+    // Color Inversion Matrix for Night Mode reading
+    private val nightModeFilter = ColorMatrixColorFilter(
+        ColorMatrix(
+            floatArrayOf(
+                -1f,  0f,  0f, 0f, 255f,
+                 0f, -1f,  0f, 0f, 255f,
+                 0f,  0f, -1f, 0f, 255f,
+                 0f,  0f,  0f, 1f,   0f
+            )
+        )
+    )
 
     init {
         setLayerType(LAYER_TYPE_HARDWARE, null)
+        isFocusable = true
+        isFocusableInTouchMode = true
+        requestFocus()
     }
 
     private val scaleDetector = ScaleGestureDetector(context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             val prevScale = scaleFactor
             scaleFactor *= detector.scaleFactor
-            scaleFactor = scaleFactor.coerceIn(0.9f, 4.5f)
+            scaleFactor = scaleFactor.coerceIn(0.9f, 5.0f)
             
             if (prevScale != scaleFactor) {
                 updateDrawMatrix()
@@ -52,12 +69,10 @@ class PdfCanvasView @JvmOverloads constructor(
 
     private val gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
         override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
-            if (scaleFactor > 1.0f) {
-                posX -= distanceX
-                posY -= distanceY
-                updateDrawMatrix()
-                postInvalidateOnAnimation()
-            }
+            posX -= distanceX
+            posY -= distanceY
+            updateDrawMatrix()
+            postInvalidateOnAnimation()
             return true
         }
 
@@ -77,7 +92,7 @@ class PdfCanvasView @JvmOverloads constructor(
         }
     })
 
-    fun setPdfBitmap(newBitmap: Bitmap?) {
+    fun setPageBitmap(newBitmap: Bitmap?) {
         bitmap = newBitmap
         scaleFactor = 1.0f
         posX = 0f
@@ -85,6 +100,14 @@ class PdfCanvasView @JvmOverloads constructor(
         recomputeBaseMatrix()
         updateDrawMatrix()
         postInvalidateOnAnimation()
+    }
+
+    fun setNightMode(nightMode: Boolean) {
+        if (isNightMode != nightMode) {
+            isNightMode = nightMode
+            paint.colorFilter = if (isNightMode) nightModeFilter else null
+            invalidate()
+        }
     }
 
     private fun recomputeBaseMatrix() {
@@ -116,6 +139,23 @@ class PdfCanvasView @JvmOverloads constructor(
         super.onSizeChanged(w, h, oldw, oldh)
         recomputeBaseMatrix()
         updateDrawMatrix()
+    }
+
+    // Intercept Galaxy Watch 6 Rotary Crown / Physical & Touch Bezel Scroll Events
+    override fun onGenericMotionEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_SCROLL) {
+            val scrollDelta = event.getAxisValue(MotionEvent.AXIS_SCROLL)
+                .takeIf { it != 0f } ?: event.getAxisValue(MotionEvent.AXIS_VSCROLL)
+
+            if (scrollDelta != 0f) {
+                // Scroll page content vertically via bezel rotation
+                posY += scrollDelta * 80f
+                updateDrawMatrix()
+                postInvalidateOnAnimation()
+                return true
+            }
+        }
+        return super.onGenericMotionEvent(event)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {

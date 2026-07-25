@@ -138,6 +138,7 @@
     <string name="common_signin_button_text_long">Sign in with Google</string>
     <string name="default_error_message">"Invalid input"</string>
     <string name="default_popup_window_title" ns2:ignore="ExtraTranslation">"Pop-Up Window"</string>
+    <string name="developer_name">Aju George</string>
     <string name="dropdown_menu">"Dropdown menu"</string>
     <string name="in_progress">In progress</string>
     <string name="indeterminate">Partially checked</string>

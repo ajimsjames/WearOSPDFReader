@@ -2,4 +2,5 @@ R_DEF: Internal format may change without notice
 local
 drawable ic_launcher
 string app_name
+string developer_name
 style Theme.WearPDFReader
