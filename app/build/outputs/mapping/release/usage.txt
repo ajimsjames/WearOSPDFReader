@@ -17315,7 +17315,7 @@ com.example.wearpdfreader.presentation.PDFListScreenKt$PDFListScreen$2
 com.example.wearpdfreader.presentation.PDFListScreenKt$PDFListScreen$3
 com.example.wearpdfreader.presentation.PDFListScreenKt$PDFListScreen$launcher$1$1
 com.example.wearpdfreader.presentation.PDFListScreenKt
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$2
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$1$invoke$$inlined$items$default$2
 com.google.android.gms.actions.ItemListIntents
 com.google.android.gms.actions.NoteIntents
 com.google.android.gms.actions.ReserveIntents
@@ -26879,7 +26879,7 @@ androidx.compose.animation.core.StartOffset
 androidx.compose.animation.core.StartOffsetType$Companion
 androidx.compose.animation.core.StartOffsetType
 androidx.compose.animation.core.SuspendAnimationKt$animate$3:
-    public final androidx.compose.runtime.DisposableEffectResult invoke()
+    public final androidx.compose.runtime.DisposableEffectResult invoke(androidx.compose.runtime.DisposableEffectScope)
     public final void invoke(androidx.compose.animation.core.AnimationScope)
 androidx.compose.animation.core.SuspendAnimationKt$animate$5:
     public static final androidx.compose.animation.core.SuspendAnimationKt$animate$5 INSTANCE
@@ -27320,7 +27320,7 @@ androidx.compose.foundation.gestures.ContentInViewNode$Request:
     public static kotlin.jvm.functions.Function0 getCurrentBounds()
 androidx.compose.foundation.gestures.ContentInViewNode$WhenMappings
 androidx.compose.foundation.gestures.ContentInViewNode$launchAnimation$2$1$1:
-    public final androidx.compose.runtime.DisposableEffectResult invoke()
+    public final androidx.compose.runtime.DisposableEffectResult invoke(androidx.compose.runtime.DisposableEffectScope)
     public final java.lang.Boolean invoke()
     public static androidx.compose.ui.node.TraversableNode$Companion$TraverseDescendantsAction invoke$1()
     public static void invoke$13()
@@ -32878,7 +32878,6 @@ androidx.compose.ui.platform.AccessibilityIterators$ParagraphTextSegmentIterator
     public static int getAssertive-0phEisY()
     public static int getAsync-PKNRLFQ()
     public static int getBlocking-PKNRLFQ()
-    public static androidx.compose.ui.text.font.FontWeight getBold()
     public static int getBottom-J6kI3mc()
     public static int getButton-o7Vup1c()
     public static int getCenter-J6kI3mc()
@@ -35542,9 +35541,11 @@ androidx.core.util.DebugUtils
 androidx.core.util.LongSparseArrayKt$$InternalSyntheticThrowCCEIfNotNull$15$82e4531fc4d9e2bde9a30d78bbe8aa943f07e5ca78afd2c955868c97d45274e7$0
 androidx.core.util.LongSparseArrayKt$keyIterator$1
 androidx.core.util.LongSparseArrayKt:
+    public static final boolean PDFViewerScreen$lambda$19(androidx.compose.runtime.MutableState)
     public static final android.graphics.Bitmap PDFViewerScreen$lambda$4(androidx.compose.runtime.MutableState)
     public static final void PDFViewerScreen$lambda$8(androidx.compose.runtime.MutableState,boolean)
     public static final void access$PDFViewerScreen$lambda$17(androidx.compose.runtime.MutableState,boolean)
+    public static final void access$PDFViewerScreen$lambda$20(androidx.compose.runtime.MutableState,boolean)
     public abstract androidx.core.util.LongSparseArrayKt add()
     public static void checkArgument(boolean)
     public static void checkNotEmpty(java.lang.String)
@@ -36419,8 +36420,8 @@ com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$1$1
     public static java.lang.Void invoke()
     private static synthetic bridge java.lang.Object invoke$com$example$wearpdfreader$presentation$PDFExplorerScreenKt$PDFExplorerScreen$1$1$invoke$$inlined$items$default$1()
     private static java.lang.Void invoke$com$example$wearpdfreader$presentation$PDFExplorerScreenKt$PDFExplorerScreen$1$1$invoke$$inlined$items$default$1()
-    private static synthetic bridge java.lang.Object invoke$com$example$wearpdfreader$presentation$PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$1()
-    private static java.lang.Void invoke$com$example$wearpdfreader$presentation$PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$1()
+    private static synthetic bridge java.lang.Object invoke$com$example$wearpdfreader$presentation$PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$1$invoke$$inlined$items$default$1()
+    private static java.lang.Void invoke$com$example$wearpdfreader$presentation$PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$1$invoke$$inlined$items$default$1()
 com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$1$1$invoke$$inlined$items$default$3:
     public final java.lang.Object invoke(int)
 com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$1$1$invoke$$inlined$items$default$4:
@@ -36430,35 +36431,38 @@ com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$2
 com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$filesList$2$2
 com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$filesList$2$3
 com.example.wearpdfreader.presentation.PDFExplorerScreenKt
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$1:
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$1$invoke$$inlined$onDispose$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2:
     public int label
     public final java.lang.Object invoke$4()
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$1$1$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$1$1$3
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$1:
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$1$1$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$1$1$3
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$1:
     public static com.example.wearpdfreader.ui.PdfCanvasView invoke()
     public final void invoke$17()
     public static void invoke$52()
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$2$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$2$2
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$2$3
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$2
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$3$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$5$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$1$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$3$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$5$1$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$5$3$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$7$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$1$1:
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$2$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$2$2
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$2$3
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$2
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$3$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$5$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$6$1$1$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$6$1$1$3$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$6$1$1$5$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$6$1$1$7$1$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$6$1$1$7$3$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$7$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$1$1$1:
     public final void invoke()
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$3
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$4:
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$1$invoke$$inlined$items$default$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$1$invoke$$inlined$items$default$3
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$1$invoke$$inlined$items$default$4:
     public final void invoke$18()
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$2$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3$8$1$1$2$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$4
 com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$loadPage$1:
     public final java.lang.Object invoke$4()
 com.example.wearpdfreader.presentation.PDFViewerScreenKt

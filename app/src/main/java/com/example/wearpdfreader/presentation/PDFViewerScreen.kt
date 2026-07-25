@@ -1,6 +1,7 @@
 package com.example.wearpdfreader.presentation
 
 import android.graphics.Bitmap
+import android.speech.tts.TextToSpeech
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,6 +26,7 @@ import androidx.wear.compose.material.Text
 import com.example.wearpdfreader.pdf.PdfRendererManager
 import com.example.wearpdfreader.ui.PdfCanvasView
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 @Composable
 fun PDFViewerScreen(
@@ -39,6 +41,23 @@ fun PDFViewerScreen(
     var isNightMode by remember { mutableStateOf(false) }
     var showSettingsModal by remember { mutableStateOf(false) }
     var showPageJumper by remember { mutableStateOf(false) }
+    var isSpeaking by remember { mutableStateOf(false) }
+
+    // TextToSpeech Engine initialization
+    var ttsEngine by remember { mutableStateOf<TextToSpeech?>(null) }
+    DisposableEffect(context) {
+        var tts: TextToSpeech? = null
+        tts = TextToSpeech(context) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                tts?.language = Locale.US
+                ttsEngine = tts
+            }
+        }
+        onDispose {
+            tts?.stop()
+            tts?.shutdown()
+        }
+    }
 
     fun loadPage(index: Int) {
         if (index !in 0 until pdfManager.pageCount) return
@@ -109,7 +128,7 @@ fun PDFViewerScreen(
             Text("Failed to render page", color = Color.Red, fontSize = 12.sp)
         }
 
-        // Tap Hint Overlay at top (fades out or minimal)
+        // Tap Hint Overlay at top
         Box(
             modifier = Modifier
                 .align(Alignment.TopCenter)
@@ -155,10 +174,39 @@ fun PDFViewerScreen(
                             text = "Page ${currentPage + 1} of ${pdfManager.pageCount}",
                             color = Color(0xFF81D4FA),
                             fontSize = 11.sp,
-                            modifier = Modifier.padding(top = 2.dp, bottom = 10.dp)
+                            modifier = Modifier.padding(top = 2.dp, bottom = 8.dp)
                         )
 
-                        // 1. Night Mode Toggle
+                        // 1. TTS Read Aloud Button
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 6.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(if (isSpeaking) Color(0xFFD32F2F) else Color(0xFF00E676))
+                                .clickable {
+                                    if (isSpeaking) {
+                                        ttsEngine?.stop()
+                                        isSpeaking = false
+                                    } else {
+                                        val speechText = "Page ${currentPage + 1} of ${pdfManager.pageCount}"
+                                        ttsEngine?.speak(speechText, TextToSpeech.QUEUE_FLUSH, null, "pdf_tts")
+                                        isSpeaking = true
+                                        Toast.makeText(context, "Reading page...", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                                .padding(vertical = 8.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = if (isSpeaking) "🛑 Stop Voice Reader" else "🔊 Read Aloud TTS",
+                                color = Color.Black,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+
+                        // 2. Night Mode Toggle
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -179,7 +227,7 @@ fun PDFViewerScreen(
                             )
                         }
 
-                        // 2. Jump to Page Button
+                        // 3. Jump to Page Button
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -196,7 +244,7 @@ fun PDFViewerScreen(
                             Text("🔢 Jump to Page", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                         }
 
-                        // 3. Close PDF Button
+                        // 4. Close PDF Button
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceEvenly
@@ -208,6 +256,7 @@ fun PDFViewerScreen(
                                     .clip(RoundedCornerShape(12.dp))
                                     .background(Color(0xFFD32F2F))
                                     .clickable {
+                                        ttsEngine?.stop()
                                         showSettingsModal = false
                                         onBack()
                                     }
