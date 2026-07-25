@@ -14,6 +14,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * Wear OS PDF Reader Main Activity
+ * @author Aju George
+ */
 sealed class Screen {
     object Explorer : Screen()
     object Viewer : Screen()

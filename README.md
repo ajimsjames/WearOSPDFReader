@@ -1,46 +1,33 @@
-# Wear OS 4 PDF Reader for Samsung Galaxy Watch 6
+# 📄 Wear OS PDF Reader
 
-A native Wear OS 4 application built with Jetpack Compose for Wear OS and Android's high-performance native `PdfRenderer`.
+**Developer & Author**: Aju George  
+**Target Device**: Samsung Galaxy Watch 6 (Wear OS 4 / Android 13+)
 
-## Features
-- **High Resolution Vector PDF Renderer**: Sharp text rendering tuned for Galaxy Watch 6 AMOLED displays (453 ppi).
-- **Gesture Controls**: Pinch-to-zoom (up to 4x) and 2D drag panning.
-- **Wear OS Navigation**: Compact page bar with page counter.
-- **Rotating Bezel Support**: Smooth scrolling using Galaxy Watch 6 physical or digital rotating bezel.
-- **Storage Access Framework (SAF)**: Pick any PDF document on watch storage or run sample PDF.
+A lightweight, high-performance, hardware-accelerated PDF Reader engineered specifically for Wear OS 4 smartwatches. Built to overcome smartwatch hardware limitations, this app bypasses Jetpack Compose recomposition overhead by leveraging a native Android View with C++ Skia hardware matrix transformations to deliver fluid 60 FPS panning, pinch-to-zoom, and crystal-clear document rendering on circular AMOLED displays.
 
 ---
 
-## How to Connect Samsung Galaxy Watch 6 via ADB Wi-Fi
+### ✨ Key Features
 
-1. **On your Samsung Galaxy Watch 6**:
-   - Go to **Settings > About Watch > Software Info**.
-   - Tap **Software Version** 7 times until Developer Mode is turned ON.
-   - Go back to **Settings > Developer Options**.
-   - Turn ON **Wireless Debugging**.
-   - Tap **Wireless Debugging > Pair new device**.
-   - Note the **Wi-Fi IP Address, Port, and Wi-Fi pairing code** displayed on watch screen.
-
-2. **On your Computer Terminal**:
-   ```bash
-   # Pair with your watch (replace IP and PORT with watch values):
-   adb pair <WATCH_IP>:<PAIR_PORT> <PAIRING_CODE>
-
-   # Connect to your watch:
-   adb connect <WATCH_IP>:<DEBUG_PORT>
-
-   # Verify connection:
-   adb devices
-   ```
+- **⚡ 60 FPS Fluid Hardware Acceleration**: Uses `LAYER_TYPE_HARDWARE` Skia matrix transformations for ultra-smooth panning and pinch-to-zoom gestures without UI lag.
+- **🔍 1080px Super-Sampled Anti-Aliasing (2.25x SSAA)**: Rasterizes PDF vector text at 1080px super-sampled resolution with bitmap anti-aliasing and dithering flags, ensuring vector text remains sharp on smartwatch screens.
+- **🚀 Native File Explorer**: Scans internal watch storage (`/sdcard/Download`, `getExternalFilesDir`) automatically—no phone or internet required.
+- **🔄 Intent Data Integration**: Opens PDFs directly when tapped inside Watch File Manager or third-party file explorers via `ACTION_VIEW` intent streams.
+- **🚫 Anti-Gesture Swipe Protection**: Custom Wear OS theme with `android:windowSwipeToDismiss = false` prevents rightward pan swipes from accidentally triggering system back-gestures or closing the app during document reading.
+- **🔋 AMOLED Dark Theme**: Pure black background designed for AMOLED smartwatch displays to save battery power during extended reading sessions.
 
 ---
 
-## Running in Android Studio
+### 👨‍💻 Author & Maintainer
 
-1. Launch Android Studio:
-   ```bash
-   studio
-   ```
-2. Click **Open** and select `/home/aju/WearOSPDFReader`.
-3. Select your connected **Samsung Galaxy Watch 6** device target.
-4. Click **Run (Shift + F10)**.
+Created with ❤️ by **Aju George**.
+
+---
+
+### 🛠️ Built With
+
+- **Target OS**: Wear OS 4 / Android 13+ (API 33+)
+- **Target Hardware**: Samsung Galaxy Watch 6 44mm (`SM-R940`), 480×480 px circular display
+- **Language**: Kotlin 1.9 & Java 21
+- **UI Framework**: Android Jetpack Compose for Wear OS & Native C++ Skia View (`AndroidView`)
+- **Optimization**: R8 Bytecode Shrinking & LRU Memory Caching
