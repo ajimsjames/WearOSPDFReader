@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -38,9 +37,9 @@ fun PDFViewerScreen(
     var currentBitmap by remember { mutableStateOf<Bitmap?>(null) }
     var isLoading by remember { mutableStateOf(true) }
     var isNightMode by remember { mutableStateOf(false) }
+    var showSettingsModal by remember { mutableStateOf(false) }
     var showPageJumper by remember { mutableStateOf(false) }
 
-    // Load page bitmap
     fun loadPage(index: Int) {
         if (index !in 0 until pdfManager.pageCount) return
         isLoading = true
@@ -54,7 +53,7 @@ fun PDFViewerScreen(
     LaunchedEffect(pdfManager) {
         loadPage(pdfManager.currentPageIndex)
         if (pdfManager.currentPageIndex > 0) {
-            Toast.makeText(context, "Resumed from page ${pdfManager.currentPageIndex + 1}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Resumed at page ${pdfManager.currentPageIndex + 1}", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -72,11 +71,37 @@ fun PDFViewerScreen(
                     PdfCanvasView(ctx).apply {
                         setPageBitmap(currentBitmap)
                         setNightMode(isNightMode)
+                        onSingleTapListener = {
+                            showSettingsModal = true
+                        }
+                        onSwipeNextPageListener = {
+                            if (currentPage < pdfManager.pageCount - 1) {
+                                loadPage(currentPage + 1)
+                            }
+                        }
+                        onSwipePrevPageListener = {
+                            if (currentPage > 0) {
+                                loadPage(currentPage - 1)
+                            }
+                        }
                     }
                 },
                 update = { view ->
                     view.setPageBitmap(currentBitmap)
                     view.setNightMode(isNightMode)
+                    view.onSingleTapListener = {
+                        showSettingsModal = true
+                    }
+                    view.onSwipeNextPageListener = {
+                        if (currentPage < pdfManager.pageCount - 1) {
+                            loadPage(currentPage + 1)
+                        }
+                    }
+                    view.onSwipePrevPageListener = {
+                        if (currentPage > 0) {
+                            loadPage(currentPage - 1)
+                        }
+                    }
                 },
                 modifier = Modifier.fillMaxSize()
             )
@@ -84,82 +109,129 @@ fun PDFViewerScreen(
             Text("Failed to render page", color = Color.Red, fontSize = 12.sp)
         }
 
-        // Top Toolbar (Exit, Night Mode, Page Jumper)
-        Row(
+        // Tap Hint Overlay at top (fades out or minimal)
+        Box(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = 8.dp)
-                .fillMaxWidth(0.9f),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+                .padding(top = 6.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(Color(0x99000000))
+                .clickable { showSettingsModal = true }
+                .padding(horizontal = 10.dp, vertical = 3.dp)
         ) {
-            // Exit Button
-            Button(
-                onClick = onBack,
-                modifier = Modifier.size(28.dp),
-                colors = ButtonDefaults.primaryButtonColors(backgroundColor = Color(0xDDCC3333))
-            ) {
-                Text("✕", color = Color.White, fontSize = 12.sp)
-            }
-
-            // Page Jumper Button
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(Color(0xDD1C1C1E))
-                    .clickable { showPageJumper = true }
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-            ) {
-                Text(
-                    text = "${currentPage + 1} / ${pdfManager.pageCount}",
-                    color = Color(0xFF81D4FA),
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-
-            // Night Mode Toggle Button
-            Button(
-                onClick = { isNightMode = !isNightMode },
-                modifier = Modifier.size(28.dp),
-                colors = ButtonDefaults.primaryButtonColors(
-                    backgroundColor = if (isNightMode) Color(0xFFFFB300) else Color(0xDD333333)
-                )
-            ) {
-                Text(
-                    text = if (isNightMode) "☀️" else "🌙",
-                    fontSize = 12.sp
-                )
-            }
+            Text(
+                text = "${currentPage + 1} / ${pdfManager.pageCount} (Tap for Settings)",
+                color = Color.LightGray,
+                fontSize = 10.sp
+            )
         }
 
-        // Bottom Page Prev / Next Navigation Controls
-        Row(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 8.dp)
-                .fillMaxWidth(0.85f),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Previous Page
-            Button(
-                onClick = { if (currentPage > 0) loadPage(currentPage - 1) },
-                enabled = currentPage > 0,
-                modifier = Modifier.size(32.dp),
-                colors = ButtonDefaults.primaryButtonColors(backgroundColor = Color(0xDD2C2C2E))
+        // Settings & Controls Modal Overlay
+        if (showSettingsModal) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color(0xFEE000000))
+                    .clickable { showSettingsModal = false }
+                    .padding(14.dp),
+                contentAlignment = Alignment.Center
             ) {
-                Text("◀", color = Color.White, fontSize = 12.sp)
-            }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.92f)
+                        .clip(RoundedCornerShape(18.dp))
+                        .background(Color(0xFF222224))
+                        .padding(14.dp)
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = "PDF Controls",
+                            color = Color.White,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold
+                        )
 
-            // Next Page
-            Button(
-                onClick = { if (currentPage < pdfManager.pageCount - 1) loadPage(currentPage + 1) },
-                enabled = currentPage < pdfManager.pageCount - 1,
-                modifier = Modifier.size(32.dp),
-                colors = ButtonDefaults.primaryButtonColors(backgroundColor = Color(0xDD2C2C2E))
-            ) {
-                Text("▶", color = Color.White, fontSize = 12.sp)
+                        Text(
+                            text = "Page ${currentPage + 1} of ${pdfManager.pageCount}",
+                            color = Color(0xFF81D4FA),
+                            fontSize = 11.sp,
+                            modifier = Modifier.padding(top = 2.dp, bottom = 10.dp)
+                        )
+
+                        // 1. Night Mode Toggle
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 6.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(if (isNightMode) Color(0xFFFFB300) else Color(0xFF333336))
+                                .clickable {
+                                    isNightMode = !isNightMode
+                                }
+                                .padding(vertical = 8.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = if (isNightMode) "☀️ Switch to Light Mode" else "🌙 Switch to Night Mode",
+                                color = if (isNightMode) Color.Black else Color.White,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+
+                        // 2. Jump to Page Button
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 6.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(Color(0xFF1565C0))
+                                .clickable {
+                                    showSettingsModal = false
+                                    showPageJumper = true
+                                }
+                                .padding(vertical = 8.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text("🔢 Jump to Page", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                        }
+
+                        // 3. Close PDF Button
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(end = 4.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(Color(0xFFD32F2F))
+                                    .clickable {
+                                        showSettingsModal = false
+                                        onBack()
+                                    }
+                                    .padding(vertical = 8.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text("✕ Close PDF", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                            }
+
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(start = 4.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(Color(0xFF444446))
+                                    .clickable { showSettingsModal = false }
+                                    .padding(vertical = 8.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text("Resume", color = Color.White, fontSize = 11.sp)
+                            }
+                        }
+                    }
+                }
             }
         }
 

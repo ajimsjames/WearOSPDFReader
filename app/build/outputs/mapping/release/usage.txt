@@ -2323,6 +2323,7 @@ androidx.compose.foundation.layout.Arrangement:
     public static synthetic void getEnd$annotations()
     public final androidx.compose.foundation.layout.Arrangement$HorizontalOrVertical getSpaceAround()
     public static synthetic void getSpaceAround$annotations()
+    public final androidx.compose.foundation.layout.Arrangement$HorizontalOrVertical getSpaceBetween()
     public static synthetic void getSpaceBetween$annotations()
     public static synthetic void getSpaceEvenly$annotations()
     public static synthetic void getStart$annotations()
@@ -6127,6 +6128,7 @@ androidx.compose.ui.Actual_jvmKt:
 androidx.compose.ui.Alignment$Companion:
     public final androidx.compose.ui.Alignment$Vertical getBottom()
     public static synthetic void getBottom$annotations()
+    public final androidx.compose.ui.Alignment getBottomCenter()
     public static synthetic void getBottomCenter$annotations()
     public final androidx.compose.ui.Alignment getBottomEnd()
     public static synthetic void getBottomEnd$annotations()
@@ -6855,7 +6857,6 @@ androidx.compose.ui.graphics.Color$Companion:
     public static synthetic void getGray-0d7_KjU$annotations()
     public final long getGreen-0d7_KjU()
     public static synthetic void getGreen-0d7_KjU$annotations()
-    public final long getLightGray-0d7_KjU()
     public static synthetic void getLightGray-0d7_KjU$annotations()
     public final long getMagenta-0d7_KjU()
     public static synthetic void getMagenta-0d7_KjU$annotations()
@@ -6875,7 +6876,6 @@ androidx.compose.ui.graphics.Color:
     public static final synthetic long access$getCyan$cp()
     public static final synthetic long access$getDarkGray$cp()
     public static final synthetic long access$getGreen$cp()
-    public static final synthetic long access$getLightGray$cp()
     public static final synthetic long access$getMagenta$cp()
     public static final synthetic long access$getYellow$cp()
     public static final float component1-impl(long)
@@ -17315,7 +17315,7 @@ com.example.wearpdfreader.presentation.PDFListScreenKt$PDFListScreen$2
 com.example.wearpdfreader.presentation.PDFListScreenKt$PDFListScreen$3
 com.example.wearpdfreader.presentation.PDFListScreenKt$PDFListScreen$launcher$1$1
 com.example.wearpdfreader.presentation.PDFListScreenKt
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$1$invoke$$inlined$items$default$2
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$2
 com.google.android.gms.actions.ItemListIntents
 com.google.android.gms.actions.NoteIntents
 com.google.android.gms.actions.ReserveIntents
@@ -27049,8 +27049,6 @@ androidx.compose.foundation.BackgroundElement:
     public static void update()
 androidx.compose.foundation.BackgroundKt$background-bw27NRU$$inlined$debugInspectorInfo$1$$InternalSyntheticThrowCCEIfNotNull$44$c76cae67bdb625cf6a3c2eee42e2a70804ef7d565be0d12d0fc0f2c97e373150$0
 androidx.compose.foundation.BackgroundKt$background-bw27NRU$$inlined$debugInspectorInfo$1
-androidx.compose.foundation.BackgroundKt:
-    public static synthetic androidx.compose.ui.Modifier background-bw27NRU$default(androidx.compose.ui.Modifier,long)
 androidx.compose.foundation.BackgroundNode:
     public static void drawOutline()
     public static void drawRect()
@@ -27609,9 +27607,9 @@ androidx.compose.foundation.layout.Arrangement:
     public static final androidx.compose.foundation.layout.Arrangement$Horizontal End
     public static final androidx.compose.foundation.layout.Arrangement INSTANCE
     public static final androidx.compose.foundation.layout.Arrangement$HorizontalOrVertical SpaceAround
+    public static final androidx.compose.foundation.layout.Arrangement$HorizontalOrVertical SpaceBetween
     public static androidx.compose.foundation.layout.Arrangement$Vertical getBottom()
-    public static androidx.compose.foundation.layout.Arrangement$Center$1 getSpaceBetween()
-    public static androidx.compose.foundation.layout.Arrangement$HorizontalOrVertical getSpaceEvenly()
+    public static androidx.compose.foundation.layout.Arrangement$Center$1 getSpaceEvenly()
     public static androidx.compose.foundation.layout.Arrangement$Horizontal getStart()
     public static androidx.compose.foundation.layout.Arrangement$Vertical getTop()
 androidx.compose.foundation.layout.BoxChildDataElement:
@@ -27640,7 +27638,7 @@ androidx.compose.foundation.layout.BoxMeasurePolicy$measure$5:
     public final void invoke(androidx.compose.ui.layout.Placeable$PlacementScope)
     public final void invoke$17()
 androidx.compose.foundation.layout.BoxScope:
-    public abstract androidx.compose.ui.Modifier align(androidx.compose.ui.BiasAlignment)
+    public abstract androidx.compose.ui.Modifier align()
 androidx.compose.foundation.layout.BoxScopeInstance$align$$inlined$debugInspectorInfo$1
 androidx.compose.foundation.layout.ColumnScope:
     public abstract androidx.compose.ui.Modifier weight()
@@ -27777,8 +27775,6 @@ androidx.compose.foundation.layout.SizeKt:
     public static final androidx.compose.foundation.layout.WrapContentElement WrapContentSizeTopStart
     public static final androidx.compose.foundation.layout.WrapContentElement WrapContentWidthCenter
     public static final androidx.compose.foundation.layout.WrapContentElement WrapContentWidthStart
-    public static androidx.compose.ui.Modifier fillMaxSize$default()
-    public static synthetic androidx.compose.ui.Modifier fillMaxWidth$default(androidx.compose.ui.Modifier)
 androidx.compose.foundation.layout.SizeMode$EnumUnboxingLocalUtility:
     static void <clinit>()
     public static int _valueOf(java.lang.String)
@@ -28689,23 +28685,18 @@ androidx.compose.runtime.ComposerImpl:
     public static void dispose$runtime_release()
     public static void endGroup()
     public static void endMovableGroup()
-    public final void endNode()
     public final void endProvider()
     public final void endProviders()
-    public final void endReplaceableGroup()
     public static void endReuseFromRoot()
     public static void ensureWriter()
     public static void exitGroup()
     public static void finalizeCompose()
-    public final androidx.compose.runtime.Applier getApplier()
     public final kotlin.coroutines.CoroutineContext getApplyCoroutineContext()
     public static boolean getAreChildrenComposing$runtime_release()
     public static androidx.compose.runtime.ControlledComposition getComposition()
     public final androidx.compose.runtime.tooling.CompositionData getCompositionData()
     public final int getCompoundKeyHash()
-    public final androidx.compose.runtime.PersistentCompositionLocalMap getCurrentCompositionLocalMap()
     public static androidx.compose.runtime.changelist.ChangeList getDeferredChanges$runtime_release()
-    public final boolean getInserting()
     public static java.lang.Object getNode()
     public static androidx.compose.runtime.SlotReader getReader$runtime_release()
     public final androidx.compose.runtime.RecomposeScope getRecomposeScope()
@@ -29152,7 +29143,6 @@ androidx.compose.runtime.ScopeUpdateScope
 androidx.compose.runtime.SdkStubsFallbackFrameClock$withFrameNanos$2
 androidx.compose.runtime.SdkStubsFallbackFrameClock
 androidx.compose.runtime.SkippableUpdater:
-    public static final synthetic androidx.compose.runtime.SkippableUpdater box-impl(androidx.compose.runtime.Composer)
     public static synthetic androidx.compose.runtime.Composer unbox-impl()
 androidx.compose.runtime.SlotReader:
     public static final int $stable
@@ -29753,7 +29743,6 @@ androidx.compose.runtime.external.kotlinx.collections.immutable.implementations.
     public static long getUnspecified-F1C5BW0()
     public static long getUnspecified-NH-jbRc()
     public static int getUp-dhqQ-8s()
-    public static long getWhite-0d7_KjU()
     public static int getXor-0nO6VwU()
     public static androidx.compose.ui.geometry.Rect getZero()
     public static long getZero-F1C5BW0()
@@ -30182,13 +30171,14 @@ androidx.compose.ui.Actual_jvmKt
 androidx.compose.ui.Alignment$Companion:
     public static final synthetic androidx.compose.ui.Alignment$Companion $$INSTANCE
     public static final androidx.compose.ui.Alignment$Vertical Bottom
+    public static final androidx.compose.ui.Alignment BottomCenter
     public static final androidx.compose.ui.Alignment BottomEnd
     public static final androidx.compose.ui.Alignment BottomStart
     public static final androidx.compose.ui.Alignment CenterEnd
     public static final androidx.compose.ui.Alignment CenterStart
+    public static final androidx.compose.ui.BiasAlignment$Vertical CenterVertically
     public static final androidx.compose.ui.Alignment$Horizontal End
     public static final androidx.compose.ui.Alignment TopEnd
-    public static androidx.compose.ui.Alignment getBottomCenter()
     public static androidx.compose.ui.Alignment getCenter()
     public static androidx.compose.ui.Alignment$Horizontal getCenterHorizontally()
     public static androidx.compose.ui.Alignment$Vertical getCenterVertically()
@@ -30764,7 +30754,6 @@ androidx.compose.ui.graphics.Color:
     public static final long Cyan
     public static final long DarkGray
     public static final long Green
-    public static final long LightGray
     public static final long Magenta
     public static final long Yellow
     public static synthetic long unbox-impl()
@@ -32009,7 +31998,6 @@ androidx.compose.ui.layout.LayoutInfo
 androidx.compose.ui.layout.LayoutKt$materializerOf$1$$InternalSyntheticThrowCCEIfNotNull$15$2b18e9285b4658cf656e64f70b1f230f1609abcef5fd050c70c1101c1c165d46$0
 androidx.compose.ui.layout.LayoutKt$materializerOf$1$$InternalSyntheticThrowCCEIfNotNull$15$9a0663b7a5c30e5b042fe63698995f2ffc158e1d5ec275a4aed903d118802db7$0
 androidx.compose.ui.layout.LayoutKt$materializerOf$1:
-    public final void invoke(androidx.compose.foundation.lazy.LazyItemScope,androidx.compose.runtime.Composer,int)
     public static kotlin.jvm.functions.Function1 invoke$1()
     public static void invoke-Deg8D_g()
 androidx.compose.ui.layout.LayoutKt
@@ -32261,11 +32249,7 @@ androidx.compose.ui.node.ComposeUiNode$Companion:
     public static final kotlin.jvm.functions.Function2 SetLayoutDirection
     public static final kotlin.jvm.functions.Function2 SetViewConfiguration
     public static final kotlin.jvm.functions.Function0 VirtualConstructor
-    public static androidx.compose.ui.node.ComposeUiNode$Companion$VirtualConstructor$1 getConstructor()
-    public static androidx.compose.ui.node.ComposeUiNode$Companion$SetCompositeKeyHash$1 getSetCompositeKeyHash()
-    public static androidx.compose.ui.node.ComposeUiNode$Companion$SetCompositeKeyHash$1 getSetMeasurePolicy()
     public static kotlin.jvm.functions.Function2 getSetModifier()
-    public static androidx.compose.ui.node.ComposeUiNode$Companion$SetCompositeKeyHash$1 getSetResolvedCompositionLocals()
 androidx.compose.ui.node.ComposeUiNode:
     public abstract void setCompositeKeyHash()
     public abstract void setCompositionLocalMap()
@@ -32359,7 +32343,7 @@ androidx.compose.ui.node.LayerPositionalProperties:
     public static void copyFrom()
     public static void copyFrom$1()
     public static boolean hasSameValuesAs()
-androidx.compose.ui.node.LayoutModifierNodeCoordinator$$InternalSyntheticThrowCCEIfNotNull$224$03a6d961604b374ac0910d8983169a94be5d99ff45e5f28c8ed4f17fe6443148$0
+androidx.compose.ui.node.LayoutModifierNodeCoordinator$$InternalSyntheticThrowCCEIfNotNull$225$03a6d961604b374ac0910d8983169a94be5d99ff45e5f28c8ed4f17fe6443148$0
 androidx.compose.ui.node.LayoutModifierNodeCoordinator$Companion
 androidx.compose.ui.node.LayoutModifierNodeCoordinator$LookaheadDelegateForLayoutModifierNode
 androidx.compose.ui.node.LayoutModifierNodeCoordinator:
@@ -35419,7 +35403,7 @@ androidx.core.os.LocaleListCompat:
     public static java.util.Locale get()
     public static java.lang.Object unwrap()
     public static androidx.core.os.LocaleListCompat wrap(android.os.LocaleList)
-androidx.core.os.LocaleListCompatWrapper$$InternalSyntheticThrowCCEIfNotNull$251$eabde584e09f5dbef5e5c77b987ffae1119ec566c4556bde1e78e256d6ae9d7b$0
+androidx.core.os.LocaleListCompatWrapper$$InternalSyntheticThrowCCEIfNotNull$252$eabde584e09f5dbef5e5c77b987ffae1119ec566c4556bde1e78e256d6ae9d7b$0
 androidx.core.os.LocaleListCompatWrapper
 androidx.core.os.LocaleListInterface
 androidx.core.os.LocaleListPlatformWrapper:
@@ -35560,7 +35544,7 @@ androidx.core.util.LongSparseArrayKt$keyIterator$1
 androidx.core.util.LongSparseArrayKt:
     public static final android.graphics.Bitmap PDFViewerScreen$lambda$4(androidx.compose.runtime.MutableState)
     public static final void PDFViewerScreen$lambda$8(androidx.compose.runtime.MutableState,boolean)
-    public static final void access$PDFViewerScreen$lambda$14(androidx.compose.runtime.MutableState,boolean)
+    public static final void access$PDFViewerScreen$lambda$17(androidx.compose.runtime.MutableState,boolean)
     public abstract androidx.core.util.LongSparseArrayKt add()
     public static void checkArgument(boolean)
     public static void checkNotEmpty(java.lang.String)
@@ -36412,24 +36396,18 @@ com.example.wearpdfreader.pdf.PdfRendererManager:
     public final java.lang.Object openPdf(android.net.Uri,kotlin.coroutines.Continuation)
     public static java.lang.Object openSamplePdf()
     public static java.lang.Object renderPage()
+com.example.wearpdfreader.presentation.ComposableSingletons$PDFExplorerScreenKt$lambda-1$1:
+    public static void invoke$51()
 com.example.wearpdfreader.presentation.ComposableSingletons$PDFExplorerScreenKt$lambda-2$1
 com.example.wearpdfreader.presentation.ComposableSingletons$PDFExplorerScreenKt:
     public static final com.example.wearpdfreader.presentation.ComposableSingletons$PDFExplorerScreenKt INSTANCE
     public static kotlin.jvm.functions.Function3 getLambda-1$app_release()
     public static kotlin.jvm.functions.Function3 getLambda-2$app_release()
 com.example.wearpdfreader.presentation.ComposableSingletons$PDFViewerScreenKt$lambda-1$1
-com.example.wearpdfreader.presentation.ComposableSingletons$PDFViewerScreenKt$lambda-2$1
-com.example.wearpdfreader.presentation.ComposableSingletons$PDFViewerScreenKt$lambda-3$1
-com.example.wearpdfreader.presentation.ComposableSingletons$PDFViewerScreenKt$lambda-4$1
 com.example.wearpdfreader.presentation.ComposableSingletons$PDFViewerScreenKt:
     public static final com.example.wearpdfreader.presentation.ComposableSingletons$PDFViewerScreenKt INSTANCE
     public static kotlin.jvm.functions.Function3 getLambda-1$app_release()
-    public static kotlin.jvm.functions.Function3 getLambda-2$app_release()
-    public static kotlin.jvm.functions.Function3 getLambda-3$app_release()
-    public static kotlin.jvm.functions.Function3 getLambda-4$app_release()
-com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$1$1$1:
-    public final void invoke(androidx.compose.foundation.layout.BoxScope,androidx.compose.runtime.Composer,int)
-    public final void invoke(androidx.compose.foundation.lazy.LazyItemScope,androidx.compose.runtime.Composer,int)
+com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$1$1$1
 com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$1$1$2$1$1:
     public final void invoke()
 com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$1$1$2$1$3
@@ -36441,8 +36419,8 @@ com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$1$1
     public static java.lang.Void invoke()
     private static synthetic bridge java.lang.Object invoke$com$example$wearpdfreader$presentation$PDFExplorerScreenKt$PDFExplorerScreen$1$1$invoke$$inlined$items$default$1()
     private static java.lang.Void invoke$com$example$wearpdfreader$presentation$PDFExplorerScreenKt$PDFExplorerScreen$1$1$invoke$$inlined$items$default$1()
-    private static synthetic bridge java.lang.Object invoke$com$example$wearpdfreader$presentation$PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$1$invoke$$inlined$items$default$1()
-    private static java.lang.Void invoke$com$example$wearpdfreader$presentation$PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$1$invoke$$inlined$items$default$1()
+    private static synthetic bridge java.lang.Object invoke$com$example$wearpdfreader$presentation$PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$1()
+    private static java.lang.Void invoke$com$example$wearpdfreader$presentation$PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$1()
 com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$1$1$invoke$$inlined$items$default$3:
     public final java.lang.Object invoke(int)
 com.example.wearpdfreader.presentation.PDFExplorerScreenKt$PDFExplorerScreen$1$1$invoke$$inlined$items$default$4:
@@ -36455,24 +36433,31 @@ com.example.wearpdfreader.presentation.PDFExplorerScreenKt
 com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$1:
     public int label
     public final java.lang.Object invoke$4()
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$1$1:
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$1$1$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$1$1$3
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$1:
     public static com.example.wearpdfreader.ui.PdfCanvasView invoke()
-    public static void invoke$51()
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$2$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$3$1$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$3$3$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$3$4
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$4$2
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$5$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$1$1$1:
-    public final void invoke()
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$1$invoke$$inlined$items$default$1
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$1$invoke$$inlined$items$default$3
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$1$invoke$$inlined$items$default$4:
-    public final void invoke$18()
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$1:
     public final void invoke$17()
-com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$2$1
+    public static void invoke$52()
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$2$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$2$2
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$2$3
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$2
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$3$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$5$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$1$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$3$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$5$1$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$6$1$1$5$3$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$7$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$1$1:
+    public final void invoke()
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$3
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1$invoke$$inlined$items$default$4:
+    public final void invoke$18()
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$1
+com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$2$8$1$1$2$1
 com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$3
 com.example.wearpdfreader.presentation.PDFViewerScreenKt$PDFViewerScreen$loadPage$1:
     public final java.lang.Object invoke$4()
@@ -37039,7 +37024,6 @@ com.google.android.gms.common.wrappers.InstantApps:
     public static final int calculateItemsOffsets$reverseAware(int,int,boolean)
     public static final boolean clearChildFocus(androidx.compose.ui.focus.FocusTargetNode,boolean,boolean)
     public static boolean clearChildFocus$default(androidx.compose.ui.focus.FocusTargetNode)
-    public static final int getCurrentCompositeKeyHash(androidx.compose.runtime.Composer)
     public static final boolean isPrecisePointer(androidx.compose.ui.input.pointer.PointerEvent)
     public static final androidx.compose.runtime.SnapshotMutationPolicy neverEqualPolicy()
     public static final java.lang.Object[] presizedBufferWith(java.lang.Object)
@@ -37434,7 +37418,6 @@ kotlin.jvm.internal.Intrinsics$Kotlin:
     public static final void getCurrentSession-impl(java.util.concurrent.atomic.AtomicReference)
     public static final long getPositionInRoot(androidx.compose.ui.draganddrop.DragAndDropEvent)
     public static final boolean isShiftPressed()
-    public static synthetic androidx.compose.runtime.ParcelableSnapshotMutableState mutableStateOf$default(java.lang.Object)
     public static final androidx.compose.runtime.SnapshotMutationPolicy neverEqualPolicy()
     public abstract java.lang.Object parseResult()
     public static final androidx.compose.foundation.gestures.ScrollConfig platformScrollConfig()
@@ -37492,7 +37475,6 @@ kotlin.ranges.IntProgression:
 kotlin.ranges.IntRange$Companion
 kotlin.ranges.IntRange:
     public static final kotlin.jvm.internal.ClassReference$Companion Companion
-    public void <init>(int)
     public static boolean contains$7()
     public static java.lang.Integer getEndInclusive()
     public static java.lang.Integer getStart()
@@ -37682,7 +37664,7 @@ kotlinx.coroutines.CoroutineExceptionHandler:
     public static final kotlinx.coroutines.CoroutineExceptionHandler$Key Key
     static void <clinit>()
 kotlinx.coroutines.CoroutineExceptionHandlerKt
-kotlinx.coroutines.CoroutineId$$InternalSyntheticThrowCCEIfNotNull$251$a7d8b984f14ef6811fc36f0d030a1c8a7f27075d192601697212118d266ca07a$0
+kotlinx.coroutines.CoroutineId$$InternalSyntheticThrowCCEIfNotNull$252$a7d8b984f14ef6811fc36f0d030a1c8a7f27075d192601697212118d266ca07a$0
 kotlinx.coroutines.CoroutineId$$InternalSyntheticThrowCCEIfNotNull$28$db4fcf294f73e0414b61d779f72a560fad56831e560e6b71def36fecaf64a8d1$0
 kotlinx.coroutines.CoroutineId
 kotlinx.coroutines.CoroutineName$Key
@@ -38315,12 +38297,12 @@ kotlinx.coroutines.internal.StackTraceRecoveryKt:
 kotlinx.coroutines.internal.Symbol
 kotlinx.coroutines.internal.SystemPropsKt
 kotlinx.coroutines.internal.SystemPropsKt__SystemProps_commonKt
-kotlinx.coroutines.internal.ThreadContextKt$countAll$1$$InternalSyntheticThrowCCEIfNotNull$251$0ee3fc021eff07e576417283c3f649d0bfd81e5c7dde16b0af94b2ddc784bfa2$0
-kotlinx.coroutines.internal.ThreadContextKt$countAll$1$$InternalSyntheticThrowCCEIfNotNull$251$0ee3fc021eff07e576417283c3f649d0bfd81e5c7dde16b0af94b2ddc784bfa2$2
+kotlinx.coroutines.internal.ThreadContextKt$countAll$1$$InternalSyntheticThrowCCEIfNotNull$252$0ee3fc021eff07e576417283c3f649d0bfd81e5c7dde16b0af94b2ddc784bfa2$0
+kotlinx.coroutines.internal.ThreadContextKt$countAll$1$$InternalSyntheticThrowCCEIfNotNull$252$0ee3fc021eff07e576417283c3f649d0bfd81e5c7dde16b0af94b2ddc784bfa2$2
 kotlinx.coroutines.internal.ThreadContextKt$countAll$1:
     public static kotlinx.coroutines.internal.ThreadState invoke()
     public static java.lang.Object invoke$38()
-    public static void invoke$52()
+    public static void invoke$53()
 kotlinx.coroutines.internal.ThreadContextKt$findOne$1
 kotlinx.coroutines.internal.ThreadContextKt$updateState$1
 kotlinx.coroutines.internal.ThreadContextKt:

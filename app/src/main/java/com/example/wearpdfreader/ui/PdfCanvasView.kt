@@ -34,7 +34,11 @@ class PdfCanvasView @JvmOverloads constructor(
     private var posY = 0f
     private var isNightMode = false
 
-    // Color Inversion Matrix for Night Mode reading
+    var onSingleTapListener: (() -> Unit)? = null
+    var onSwipeNextPageListener: (() -> Unit)? = null
+    var onSwipePrevPageListener: (() -> Unit)? = null
+
+    // Night Mode Color Inversion Filter
     private val nightModeFilter = ColorMatrixColorFilter(
         ColorMatrix(
             floatArrayOf(
@@ -48,18 +52,16 @@ class PdfCanvasView @JvmOverloads constructor(
 
     init {
         setLayerType(LAYER_TYPE_HARDWARE, null)
-        isFocusable = true
-        isFocusableInTouchMode = true
-        requestFocus()
     }
 
     private val scaleDetector = ScaleGestureDetector(context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             val prevScale = scaleFactor
             scaleFactor *= detector.scaleFactor
-            scaleFactor = scaleFactor.coerceIn(0.9f, 5.0f)
+            scaleFactor = scaleFactor.coerceIn(1.0f, 4.5f)
             
             if (prevScale != scaleFactor) {
+                clampPosition()
                 updateDrawMatrix()
                 postInvalidateOnAnimation()
             }
@@ -68,12 +70,39 @@ class PdfCanvasView @JvmOverloads constructor(
     })
 
     private val gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
-        override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
-            posX -= distanceX
-            posY -= distanceY
-            updateDrawMatrix()
-            postInvalidateOnAnimation()
+        override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
+            onSingleTapListener?.invoke()
             return true
+        }
+
+        override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+            if (scaleFactor > 1.05f) {
+                posX -= distanceX
+                posY -= distanceY
+                clampPosition()
+                updateDrawMatrix()
+                postInvalidateOnAnimation()
+            }
+            return true
+        }
+
+        override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+            // Horizontal swipe for page change when at 1.0x zoom
+            if (scaleFactor <= 1.05f && e1 != null) {
+                val diffX = e2.x - e1.x
+                val diffY = e2.y - e1.y
+                if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 100 && Math.abs(velocityX) > 200) {
+                    if (diffX < 0) {
+                        // Swipe Left -> Next Page
+                        onSwipeNextPageListener?.invoke()
+                    } else {
+                        // Swipe Right -> Previous Page
+                        onSwipePrevPageListener?.invoke()
+                    }
+                    return true
+                }
+            }
+            return false
         }
 
         override fun onDoubleTap(e: MotionEvent): Boolean {
@@ -86,6 +115,7 @@ class PdfCanvasView @JvmOverloads constructor(
                 posX = 0f
                 posY = 0f
             }
+            clampPosition()
             updateDrawMatrix()
             postInvalidateOnAnimation()
             return true
@@ -125,6 +155,33 @@ class PdfCanvasView @JvmOverloads constructor(
         baseMatrix.postTranslate(dx, dy)
     }
 
+    private fun clampPosition() {
+        val bmp = bitmap ?: return
+        val vWidth = width.toFloat()
+        val vHeight = height.toFloat()
+        if (vWidth <= 0 || vHeight <= 0 || bmp.width <= 0 || bmp.height <= 0) return
+
+        val scale = (vWidth / bmp.width.toFloat()).coerceAtMost(vHeight / bmp.height.toFloat())
+        val scaledWidth = bmp.width * scale * scaleFactor
+        val scaledHeight = bmp.height * scale * scaleFactor
+
+        // Clamp Horizontal
+        if (scaledWidth <= vWidth) {
+            posX = 0f
+        } else {
+            val maxDx = (scaledWidth - vWidth) / 2f
+            posX = posX.coerceIn(-maxDx, maxDx)
+        }
+
+        // Clamp Vertical
+        if (scaledHeight <= vHeight) {
+            posY = 0f
+        } else {
+            val maxDy = (scaledHeight - vHeight) / 2f
+            posY = posY.coerceIn(-maxDy, maxDy)
+        }
+    }
+
     private fun updateDrawMatrix() {
         drawMatrix.set(baseMatrix)
         if (scaleFactor != 1.0f || posX != 0f || posY != 0f) {
@@ -139,23 +196,6 @@ class PdfCanvasView @JvmOverloads constructor(
         super.onSizeChanged(w, h, oldw, oldh)
         recomputeBaseMatrix()
         updateDrawMatrix()
-    }
-
-    // Intercept Galaxy Watch 6 Rotary Crown / Physical & Touch Bezel Scroll Events
-    override fun onGenericMotionEvent(event: MotionEvent): Boolean {
-        if (event.action == MotionEvent.ACTION_SCROLL) {
-            val scrollDelta = event.getAxisValue(MotionEvent.AXIS_SCROLL)
-                .takeIf { it != 0f } ?: event.getAxisValue(MotionEvent.AXIS_VSCROLL)
-
-            if (scrollDelta != 0f) {
-                // Scroll page content vertically via bezel rotation
-                posY += scrollDelta * 80f
-                updateDrawMatrix()
-                postInvalidateOnAnimation()
-                return true
-            }
-        }
-        return super.onGenericMotionEvent(event)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
