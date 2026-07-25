@@ -63,6 +63,10 @@ fun PDFViewerScreen(
         if (index !in 0 until pdfManager.pageCount) return
         isLoading = true
         currentPage = index
+        if (isSpeaking) {
+            ttsEngine?.stop()
+            isSpeaking = false
+        }
         coroutineScope.launch {
             currentBitmap = pdfManager.renderPage(index)
             isLoading = false
@@ -189,17 +193,20 @@ fun PDFViewerScreen(
                                         ttsEngine?.stop()
                                         isSpeaking = false
                                     } else {
-                                        val speechText = "Page ${currentPage + 1} of ${pdfManager.pageCount}"
-                                        ttsEngine?.speak(speechText, TextToSpeech.QUEUE_FLUSH, null, "pdf_tts")
-                                        isSpeaking = true
-                                        Toast.makeText(context, "Reading page...", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, "Extracting PDF Text...", Toast.LENGTH_SHORT).show()
+                                        coroutineScope.launch {
+                                            val extractedText = pdfManager.extractCurrentPageText()
+                                            ttsEngine?.speak(extractedText, TextToSpeech.QUEUE_FLUSH, null, "pdf_tts")
+                                            isSpeaking = true
+                                            Toast.makeText(context, "Reading Page Text...", Toast.LENGTH_SHORT).show()
+                                        }
                                     }
                                 }
                                 .padding(vertical = 8.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = if (isSpeaking) "🛑 Stop Voice Reader" else "🔊 Read Aloud TTS",
+                                text = if (isSpeaking) "🛑 Stop Voice Reader" else "🔊 Read Page Text (TTS)",
                                 color = Color.Black,
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold
