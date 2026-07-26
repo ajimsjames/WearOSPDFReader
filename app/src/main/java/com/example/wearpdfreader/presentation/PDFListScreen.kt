@@ -59,7 +59,7 @@ fun PDFListScreen(
         ScalingLazyColumn(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = PaddingValues(top = 28.dp, bottom = 24.dp)
+            contentPadding = PaddingValues(top = 38.dp, bottom = 24.dp)
         ) {
             item {
                 Text(
