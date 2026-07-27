@@ -1,4 +1,4 @@
-#Sun Jul 26 12:31:11 IST 2026
+#Mon Jul 27 22:13:23 IST 2026
 base.0=/home/aju/WearOSPDFReader/app/build/intermediates/dex/release/minifyReleaseWithR8/classes.dex
 path.0=classes.dex
 renamed.0=classes.dex
