@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,6 +23,7 @@ import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.ButtonDefaults
 import androidx.wear.compose.material.CircularProgressIndicator
 import androidx.wear.compose.material.Text
+import com.example.wearpdfreader.pdf.BookmarkManager
 import com.example.wearpdfreader.pdf.PdfRendererManager
 import com.example.wearpdfreader.ui.PdfCanvasView
 import kotlinx.coroutines.launch
@@ -33,17 +35,25 @@ fun PDFViewerScreen(
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+    val bookmarkManager = remember { BookmarkManager(context) }
+
     var currentPage by remember { mutableStateOf(pdfManager.currentPageIndex) }
     var currentBitmap by remember { mutableStateOf<Bitmap?>(null) }
     var isLoading by remember { mutableStateOf(true) }
-    var isNightMode by remember { mutableStateOf(false) }
+
+    var isNightMode by remember { mutableStateOf(bookmarkManager.isNightModeEnabled()) }
+    var isCurrentBookmarked by remember { mutableStateOf(bookmarkManager.isBookmarked(pdfManager.pdfKey, currentPage)) }
+    var savedBookmarks by remember { mutableStateOf(bookmarkManager.getBookmarks(pdfManager.pdfKey)) }
+
     var showSettingsModal by remember { mutableStateOf(false) }
     var showPageJumper by remember { mutableStateOf(false) }
+    var showBookmarksModal by remember { mutableStateOf(false) }
 
     fun loadPage(index: Int) {
         if (index !in 0 until pdfManager.pageCount) return
         isLoading = true
         currentPage = index
+        isCurrentBookmarked = bookmarkManager.isBookmarked(pdfManager.pdfKey, index)
         coroutineScope.launch {
             currentBitmap = pdfManager.renderPage(index)
             isLoading = false
@@ -52,9 +62,6 @@ fun PDFViewerScreen(
 
     LaunchedEffect(pdfManager) {
         loadPage(pdfManager.currentPageIndex)
-        if (pdfManager.currentPageIndex > 0) {
-            Toast.makeText(context, "Resumed at page ${pdfManager.currentPageIndex + 1}", Toast.LENGTH_SHORT).show()
-        }
     }
 
     Box(
@@ -109,140 +116,334 @@ fun PDFViewerScreen(
             Text("Failed to render page", color = Color.Red, fontSize = 12.sp)
         }
 
-        // Tap Hint Overlay at top
-        Box(
+        // =========================================================
+        // TOP OVERLAY: PAGE COUNTER + QUICK NIGHT MODE & BOOKMARK TOGGLE
+        // =========================================================
+        Row(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = 6.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(Color(0x99000000))
-                .clickable { showSettingsModal = true }
-                .padding(horizontal = 10.dp, vertical = 3.dp)
+                .padding(top = 4.dp)
+                .fillMaxWidth(0.92f),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "${currentPage + 1} / ${pdfManager.pageCount} (Tap for Settings)",
-                color = Color.LightGray,
-                fontSize = 10.sp
-            )
+            // 🌙 / ☀️ OLED Night Mode Toggle Button
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(if (isNightMode) Color(0xFFFFB300) else Color(0xAA2C2C2E))
+                    .clickable {
+                        isNightMode = !isNightMode
+                        bookmarkManager.setNightModeEnabled(isNightMode)
+                        Toast.makeText(
+                            context,
+                            if (isNightMode) "🌙 Pitch Black Dark Mode ON" else "☀️ Light Mode ON",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    .padding(6.dp)
+            ) {
+                Text(
+                    text = if (isNightMode) "☀️" else "🌙",
+                    fontSize = 11.sp
+                )
+            }
+
+            // Center Page Info Pill
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(Color(0xCC1C1C1E))
+                    .clickable { showSettingsModal = true }
+                    .padding(horizontal = 10.dp, vertical = 4.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (isCurrentBookmarked) {
+                        Text("🔖 ", fontSize = 10.sp)
+                    }
+                    Text(
+                        text = "${currentPage + 1} / ${pdfManager.pageCount}",
+                        color = if (isCurrentBookmarked) Color(0xFFFFD600) else Color.White,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+
+            // 🔖 One-Tap Quick Bookmark Toggle Button
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(if (isCurrentBookmarked) Color(0xFFFFD600) else Color(0xAA2C2C2E))
+                    .clickable {
+                        val added = bookmarkManager.toggleBookmark(pdfManager.pdfKey, currentPage)
+                        isCurrentBookmarked = added
+                        savedBookmarks = bookmarkManager.getBookmarks(pdfManager.pdfKey)
+                        Toast.makeText(
+                            context,
+                            if (added) "🔖 Page ${currentPage + 1} Bookmarked!" else "🗑️ Bookmark Removed",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    .padding(6.dp)
+            ) {
+                Text(
+                    text = "🔖",
+                    fontSize = 11.sp
+                )
+            }
         }
 
-        // Settings & Controls Modal Overlay
+        // =========================================================
+        // SETTINGS & PDF CONTROLS MODAL OVERLAY
+        // =========================================================
         if (showSettingsModal) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color(0xFEE000000))
+                    .background(Color(0xEE000000))
                     .clickable { showSettingsModal = false }
                     .padding(14.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth(0.92f)
+                        .fillMaxWidth(0.95f)
                         .clip(RoundedCornerShape(18.dp))
-                        .background(Color(0xFF222224))
-                        .padding(14.dp)
+                        .background(Color(0xFF1E1E24))
+                        .padding(12.dp)
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             text = "PDF Controls",
                             color = Color.White,
-                            fontSize = 14.sp,
+                            fontSize = 13.sp,
                             fontWeight = FontWeight.Bold
                         )
 
                         Text(
                             text = "Page ${currentPage + 1} of ${pdfManager.pageCount}",
-                            color = Color(0xFF81D4FA),
-                            fontSize = 11.sp,
+                            color = Color(0xFF00E5FF),
+                            fontSize = 10.sp,
                             modifier = Modifier.padding(top = 2.dp, bottom = 8.dp)
                         )
 
-                        // 1. Night Mode Toggle
+                        // 1. OLED Pitch Black Dark Mode Toggle
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(bottom = 6.dp)
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(if (isNightMode) Color(0xFFFFB300) else Color(0xFF333336))
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(if (isNightMode) Color(0xFFFFB300) else Color(0xFF2C2C30))
                                 .clickable {
                                     isNightMode = !isNightMode
+                                    bookmarkManager.setNightModeEnabled(isNightMode)
                                 }
-                                .padding(vertical = 8.dp),
+                                .padding(vertical = 7.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = if (isNightMode) "☀️ Switch to Light Mode" else "🌙 Switch to Night Mode",
+                                text = if (isNightMode) "☀️ Invert to Light Mode" else "🌙 Pitch Black OLED Mode",
                                 color = if (isNightMode) Color.Black else Color.White,
-                                fontSize = 11.sp,
+                                fontSize = 10.5.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         }
 
-                        // 2. Jump to Page Button
+                        // 2. Bookmark Current Page Button
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(bottom = 6.dp)
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(Color(0xFF1565C0))
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(if (isCurrentBookmarked) Color(0xFFFFD600) else Color(0xFF2979FF))
+                                .clickable {
+                                    val added = bookmarkManager.toggleBookmark(pdfManager.pdfKey, currentPage)
+                                    isCurrentBookmarked = added
+                                    savedBookmarks = bookmarkManager.getBookmarks(pdfManager.pdfKey)
+                                }
+                                .padding(vertical = 7.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = if (isCurrentBookmarked) "🔖 Remove Bookmark" else "🔖 Bookmark Page ${currentPage + 1}",
+                                color = if (isCurrentBookmarked) Color.Black else Color.White,
+                                fontSize = 10.5.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+
+                        // 3. View Saved Bookmarks Button
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 6.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(Color(0xFF7C4DFF))
+                                .clickable {
+                                    showSettingsModal = false
+                                    savedBookmarks = bookmarkManager.getBookmarks(pdfManager.pdfKey)
+                                    showBookmarksModal = true
+                                }
+                                .padding(vertical = 7.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "📋 Saved Bookmarks (${savedBookmarks.size})",
+                                color = Color.White,
+                                fontSize = 10.5.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+
+                        // 4. Jump to Page Button
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 6.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(Color(0xFF00C853))
                                 .clickable {
                                     showSettingsModal = false
                                     showPageJumper = true
                                 }
-                                .padding(vertical = 8.dp),
+                                .padding(vertical = 7.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("🔢 Jump to Page", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                            Text("🔢 Jump to Page", color = Color.White, fontSize = 10.5.sp, fontWeight = FontWeight.Bold)
                         }
 
-                        // 3. Close PDF Button
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceEvenly
+                        // 5. Close Button
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(Color(0xFFD32F2F))
+                                .clickable {
+                                    showSettingsModal = false
+                                    onBack()
+                                }
+                                .padding(vertical = 7.dp),
+                            contentAlignment = Alignment.Center
                         ) {
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(end = 4.dp)
-                                    .clip(RoundedCornerShape(12.dp))
-                                    .background(Color(0xFFD32F2F))
-                                    .clickable {
-                                        showSettingsModal = false
-                                        onBack()
-                                    }
-                                    .padding(vertical = 8.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text("✕ Close PDF", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                            }
-
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(start = 4.dp)
-                                    .clip(RoundedCornerShape(12.dp))
-                                    .background(Color(0xFF444446))
-                                    .clickable { showSettingsModal = false }
-                                    .padding(vertical = 8.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text("Resume", color = Color.White, fontSize = 11.sp)
-                            }
+                            Text("✕ Close Document", color = Color.White, fontSize = 10.5.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
             }
         }
 
-        // Circular Page Jumper Picker Modal
+        // =========================================================
+        // SAVED BOOKMARKS LIST MODAL
+        // =========================================================
+        if (showBookmarksModal) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color(0xFA000000))
+                    .clickable { showBookmarksModal = false }
+                    .padding(14.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.92f)
+                        .fillMaxHeight(0.88f)
+                        .clip(RoundedCornerShape(18.dp))
+                        .background(Color(0xFF1E1E24))
+                        .padding(10.dp)
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = "🔖 Bookmarks Manager",
+                            color = Color(0xFFFFD600),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(bottom = 6.dp)
+                        )
+
+                        if (savedBookmarks.isEmpty()) {
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxWidth(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = "No saved bookmarks yet.\nTap 🔖 on any page to save it!",
+                                    color = Color.Gray,
+                                    fontSize = 10.sp,
+                                    lineHeight = 13.sp
+                                )
+                            }
+                        } else {
+                            LazyColumn(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                items(savedBookmarks) { pageIdx ->
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth(0.9f)
+                                            .padding(vertical = 3.dp)
+                                            .clip(RoundedCornerShape(10.dp))
+                                            .background(if (pageIdx == currentPage) Color(0xFF7C4DFF) else Color(0xFF2C2C30))
+                                            .clickable {
+                                                showBookmarksModal = false
+                                                loadPage(pageIdx)
+                                            }
+                                            .padding(vertical = 7.dp, horizontal = 10.dp),
+                                        contentAlignment = Alignment.CenterStart
+                                    ) {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                text = "🔖 Page ${pageIdx + 1}",
+                                                color = Color.White,
+                                                fontSize = 10.5.sp,
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                            Text(
+                                                text = if (pageIdx == currentPage) "Current" else "Jump ➔",
+                                                color = Color(0xFF00E5FF),
+                                                fontSize = 9.sp
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        Button(
+                            onClick = { showBookmarksModal = false },
+                            modifier = Modifier
+                                .fillMaxWidth(0.85f)
+                                .height(28.dp)
+                                .padding(top = 4.dp),
+                            colors = ButtonDefaults.primaryButtonColors(backgroundColor = Color(0xFF444446))
+                        ) {
+                            Text("Close", color = Color.White, fontSize = 10.sp)
+                        }
+                    }
+                }
+            }
+        }
+
+        // =========================================================
+        // PAGE JUMPER MODAL
+        // =========================================================
         if (showPageJumper) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color(0xFA000000))
                     .clickable { showPageJumper = false }
-                    .padding(16.dp),
+                    .padding(14.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Box(
@@ -257,7 +458,7 @@ fun PDFViewerScreen(
                         Text(
                             text = "Jump to Page",
                             color = Color.White,
-                            fontSize = 13.sp,
+                            fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(bottom = 6.dp)
                         )
@@ -275,7 +476,7 @@ fun PDFViewerScreen(
                                         .fillMaxWidth(0.85f)
                                         .padding(vertical = 2.dp)
                                         .clip(RoundedCornerShape(10.dp))
-                                        .background(if (pageNum == currentPage + 1) Color(0xFF1565C0) else Color(0xFF2C2C2E))
+                                        .background(if (pageNum == currentPage + 1) Color(0xFF00C853) else Color(0xFF2C2C2E))
                                         .clickable {
                                             showPageJumper = false
                                             loadPage(pageNum - 1)
@@ -286,7 +487,7 @@ fun PDFViewerScreen(
                                     Text(
                                         text = "Page $pageNum",
                                         color = Color.White,
-                                        fontSize = 11.sp,
+                                        fontSize = 10.5.sp,
                                         fontWeight = FontWeight.Medium
                                     )
                                 }

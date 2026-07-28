@@ -11,8 +11,8 @@ android {
         applicationId = "com.example.wearpdfreader"
         minSdk = 30
         targetSdk = 33
-        versionCode = 10
-        versionName = "1.6.0"
+        versionCode = 11
+        versionName = "1.7.0"
 
         vectorDrawables {
             useSupportLibrary = true

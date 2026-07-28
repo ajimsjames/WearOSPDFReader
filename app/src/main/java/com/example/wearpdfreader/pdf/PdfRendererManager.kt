@@ -24,7 +24,8 @@ class PdfRendererManager(private val context: Context) {
     var currentPageIndex: Int = 0
         private set
 
-    private var currentFileKey: String = ""
+    var currentFileKey: String = ""
+    val pdfKey: String get() = currentFileKey
     private val prefs: SharedPreferences = context.getSharedPreferences("pdf_bookmarks", Context.MODE_PRIVATE)
 
     // Memory cache for 1080px rendered bitmaps
