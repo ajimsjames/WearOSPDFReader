@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace = "com.example.wearpdfreader"
+    namespace = "com.ajimsjames.wearpdfreader"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.wearpdfreader"
+        applicationId = "com.ajimsjames.wearpdfreader"
         minSdk = 30
         targetSdk = 33
-        versionCode = 12
-        versionName = "1.8.0"
+        versionCode = 13
+        versionName = "2.0.0"
 
         vectorDrawables {
             useSupportLibrary = true

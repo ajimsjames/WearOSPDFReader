@@ -1,7 +1,7 @@
 <variant
     name="release"
     useSupportLibraryVectorDrawables="true"
-    package="com.example.wearpdfreader"
+    package="com.ajimsjames.wearpdfreader"
     minSdkVersion="30"
     targetSdkVersion="33"
     shrinking="true"
@@ -25,7 +25,7 @@
   <artifact
       classOutputs="build/intermediates/javac/release/compileReleaseJavaWithJavac/classes:build/tmp/kotlin-classes/release:build/kotlinToolingMetadata:build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/release/processReleaseResources/R.jar"
       type="MAIN"
-      applicationId="com.example.wearpdfreader"
+      applicationId="com.ajimsjames.wearpdfreader"
       generatedSourceFolders="build/generated/ap_generated_sources/release/out"
       generatedResourceFolders="build/generated/res/resValues/release"
       desugaredMethodsFiles="/home/aju/.gradle/caches/transforms-3/81fee90ca0a6655ad3443a7b9643e957/transformed/D8BackportedDesugaredMethods.txt">

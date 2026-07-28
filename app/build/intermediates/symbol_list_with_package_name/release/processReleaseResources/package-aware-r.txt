@@ -1,4 +1,4 @@
-com.example.wearpdfreader
+com.ajimsjames.wearpdfreader
 attr action
 attr alpha
 attr argType

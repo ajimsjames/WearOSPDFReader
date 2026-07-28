@@ -1,14 +1,10 @@
 [
     {
-        "merged": "com.example.wearpdfreader.app-release-53:/drawable_ic_launcher_round.xml.flat",
-        "source": "com.example.wearpdfreader.app-main-54:/drawable/ic_launcher_round.xml"
+        "merged": "com.ajimsjames.wearpdfreader.app-release-53:/drawable_ic_launcher.xml.flat",
+        "source": "com.ajimsjames.wearpdfreader.app-main-54:/drawable/ic_launcher.xml"
     },
     {
-        "merged": "com.example.wearpdfreader.app-release-53:/drawable_ic_launcher.xml.flat",
-        "source": "com.example.wearpdfreader.app-main-54:/drawable/ic_launcher.xml"
-    },
-    {
-        "merged": "/home/aju/.gradle/daemon/8.4/com.example.wearpdfreader.app-release-53:/drawable_ic_launcher.xml.flat",
-        "source": "/home/aju/.gradle/daemon/8.4/com.example.wearpdfreader.app-main-54:/drawable/ic_launcher.xml"
+        "merged": "com.ajimsjames.wearpdfreader.app-release-53:/drawable_ic_launcher_round.xml.flat",
+        "source": "com.ajimsjames.wearpdfreader.app-main-54:/drawable/ic_launcher_round.xml"
     }
 ]

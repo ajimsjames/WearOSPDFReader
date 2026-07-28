@@ -4,7 +4,7 @@
     "type": "COMPATIBLE_SCREEN_MANIFEST",
     "kind": "Directory"
   },
-  "applicationId": "com.example.wearpdfreader",
+  "applicationId": "com.ajimsjames.wearpdfreader",
   "variantName": "release",
   "elements": []
 }

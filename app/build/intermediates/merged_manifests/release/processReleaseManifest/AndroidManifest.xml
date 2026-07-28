@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.wearpdfreader"
-    android:versionCode="12"
-    android:versionName="1.8.0" >
+    package="com.ajimsjames.wearpdfreader"
+    android:versionCode="13"
+    android:versionName="2.0.0" >
 
     <uses-sdk
         android:minSdkVersion="30"
@@ -18,10 +18,10 @@
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <permission
-        android:name="com.example.wearpdfreader.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        android:name="com.ajimsjames.wearpdfreader.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.example.wearpdfreader.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+    <uses-permission android:name="com.ajimsjames.wearpdfreader.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
 
     <application
         android:allowBackup="true"
@@ -41,7 +41,7 @@
             android:value="true" />
 
         <activity
-            android:name="com.example.wearpdfreader.MainActivity"
+            android:name="com.ajimsjames.wearpdfreader.MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:taskAffinity=""
@@ -73,7 +73,7 @@
 
         <provider
             android:name="androidx.startup.InitializationProvider"
-            android:authorities="com.example.wearpdfreader.androidx-startup"
+            android:authorities="com.ajimsjames.wearpdfreader.androidx-startup"
             android:exported="false" >
             <meta-data
                 android:name="androidx.emoji2.text.EmojiCompatInitializer"

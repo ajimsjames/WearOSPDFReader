@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wear PDF Reader</string>
+    <string name="developer_name">Aju George</string>
+    <style name="Theme.WearPDFReader" parent="@android:style/Theme.DeviceDefault">
+        <item name="android:windowSwipeToDismiss">false</item>
+    </style>
+</resources>
