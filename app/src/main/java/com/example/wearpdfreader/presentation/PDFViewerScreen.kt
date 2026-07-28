@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -195,7 +197,7 @@ fun PDFViewerScreen(
         }
 
         // =========================================================
-        // SETTINGS & PDF CONTROLS MODAL OVERLAY
+        // SETTINGS & PDF CONTROLS MODAL OVERLAY (SCROLLABLE)
         // =========================================================
         if (showSettingsModal) {
             Box(
@@ -203,17 +205,24 @@ fun PDFViewerScreen(
                     .fillMaxSize()
                     .background(Color(0xEE000000))
                     .clickable { showSettingsModal = false }
-                    .padding(14.dp),
+                    .padding(8.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(0.95f)
+                        .fillMaxHeight(0.9f)
                         .clip(RoundedCornerShape(18.dp))
                         .background(Color(0xFF1E1E24))
-                        .padding(12.dp)
+                        .padding(10.dp)
                 ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    val scrollState = rememberScrollState()
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(scrollState),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Text(
                             text = "PDF Controls",
                             color = Color.White,
@@ -317,6 +326,7 @@ fun PDFViewerScreen(
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .padding(bottom = 12.dp)
                                 .clip(RoundedCornerShape(10.dp))
                                 .background(Color(0xFFD32F2F))
                                 .clickable {
@@ -328,6 +338,8 @@ fun PDFViewerScreen(
                         ) {
                             Text("✕ Close Document", color = Color.White, fontSize = 10.5.sp, fontWeight = FontWeight.Bold)
                         }
+
+                        Spacer(modifier = Modifier.height(20.dp))
                     }
                 }
             }
