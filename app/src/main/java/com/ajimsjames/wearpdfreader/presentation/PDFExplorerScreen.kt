@@ -39,6 +39,19 @@ fun PDFExplorerScreen(
     var currentDir by remember { mutableStateOf(downloadsDir) }
     var refreshTrigger by remember { mutableStateOf(0) }
 
+    val lifecycleOwner = androidx.compose.ui.platform.LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
+            if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
+                refreshTrigger++
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
     val recentDocs = remember(activeTab, refreshTrigger) {
         if (activeTab == "Recent") RecentDocsManager.getRecentDocs(context) else emptyList()
     }
