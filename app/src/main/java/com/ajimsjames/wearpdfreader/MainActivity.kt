@@ -32,7 +32,16 @@ class MainActivity : ComponentActivity() {
         pdfManager = PdfRendererManager(applicationContext)
 
         // Request standard/media storage permissions
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(
+                arrayOf(
+                    android.Manifest.permission.READ_MEDIA_IMAGES,
+                    android.Manifest.permission.READ_MEDIA_VIDEO,
+                    android.Manifest.permission.READ_MEDIA_AUDIO
+                ),
+                101
+            )
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(
                 arrayOf(
                     android.Manifest.permission.READ_EXTERNAL_STORAGE

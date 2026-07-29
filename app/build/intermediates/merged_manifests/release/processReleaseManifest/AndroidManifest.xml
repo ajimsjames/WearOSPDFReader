@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ajimsjames.wearpdfreader"
-    android:versionCode="10"
-    android:versionName="2.3.0" >
+    android:versionCode="11"
+    android:versionName="2.3.1" >
 
     <uses-sdk
         android:minSdkVersion="30"
@@ -14,8 +14,10 @@
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.READ_MEDIA_DOCUMENTS" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
     <permission
         android:name="com.ajimsjames.wearpdfreader.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
