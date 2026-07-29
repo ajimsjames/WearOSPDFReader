@@ -3,7 +3,7 @@
     useSupportLibraryVectorDrawables="true"
     package="com.ajimsjames.wearpdfreader"
     minSdkVersion="30"
-    targetSdkVersion="33"
+    targetSdkVersion="30"
     shrinking="true"
     mergedManifest="build/intermediates/merged_manifest/release/processReleaseMainManifest/AndroidManifest.xml"
     proguardFiles="build/intermediates/default_proguard_files/global/proguard-android-optimize.txt-8.3.1:proguard-rules.pro"

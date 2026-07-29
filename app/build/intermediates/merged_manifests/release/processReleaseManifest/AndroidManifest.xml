@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ajimsjames.wearpdfreader"
-    android:versionCode="12"
-    android:versionName="2.3.2" >
+    android:versionCode="13"
+    android:versionName="2.3.3" >
 
     <uses-sdk
         android:minSdkVersion="30"
-        android:targetSdkVersion="33" />
+        android:targetSdkVersion="30" />
 
     <uses-feature android:name="android.hardware.type.watch" />
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
     <permission
         android:name="com.ajimsjames.wearpdfreader.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"

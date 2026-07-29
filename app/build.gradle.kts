@@ -10,9 +10,9 @@ android {
     defaultConfig {
         applicationId = "com.ajimsjames.wearpdfreader"
         minSdk = 30
-        targetSdk = 33
-        versionCode = 12
-        versionName = "2.3.2"
+        targetSdk = 30
+        versionCode = 13
+        versionName = "2.3.3"
 
         vectorDrawables {
             useSupportLibrary = true
