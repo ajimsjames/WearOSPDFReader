@@ -1,5 +1,9 @@
 package com.ajimsjames.wearpdfreader.presentation
 
+import android.content.Intent
+import android.provider.Settings
+import android.os.Build
+import androidx.compose.ui.text.style.TextAlign
 import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
@@ -50,6 +54,88 @@ fun PDFExplorerScreen(
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
+    }
+
+    val isStorageManager = remember(refreshTrigger) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Environment.isExternalStorageManager()
+        } else {
+            true
+        }
+    }
+
+    if (!isStorageManager) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black)
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            LazyColumn(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(vertical = 12.dp)
+            ) {
+                item {
+                    Text(
+                        text = "🔒 Permission Required",
+                        color = Color(0xFFFFB300),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                }
+                item {
+                    Text(
+                        text = "This app needs All Files Access to read local PDF documents. Please enable it in Settings.",
+                        color = Color.White,
+                        fontSize = 10.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(Color(0xFF2C2C2E))
+                            .clickable {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                    try {
+                                        val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
+                                            data = Uri.parse("package:${context.packageName}")
+                                        }
+                                        context.startActivity(intent)
+                                    } catch (e: Exception) {
+                                        try {
+                                            val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                                            context.startActivity(intent)
+                                        } catch (ex: Exception) {
+                                            Toast.makeText(context, "Could not open settings. Please enable manually.", Toast.LENGTH_LONG).show()
+                                        }
+                                    }
+                                }
+                            }
+                            .padding(vertical = 8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("⚙️ Open Settings", color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+                item {
+                    Text(
+                        text = "Or go to:\nWatch Settings ➔ Apps ➔ Special App Access ➔ All Files Access ➔ PDF Reader",
+                        color = Color.Gray,
+                        fontSize = 8.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(top = 10.dp)
+                    )
+                }
+            }
+        }
+        return
     }
 
     val recentDocs = remember(activeTab, refreshTrigger) {
