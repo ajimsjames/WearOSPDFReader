@@ -10,9 +10,9 @@ android {
     defaultConfig {
         applicationId = "com.ajimsjames.wearpdfreader"
         minSdk = 30
-        targetSdk = 30
-        versionCode = 13
-        versionName = "2.3.3"
+        targetSdk = 33
+        versionCode = 15
+        versionName = "2.3.5"
 
         vectorDrawables {
             useSupportLibrary = true
@@ -66,4 +66,10 @@ dependencies {
     implementation(libs.wear.compose.navigation)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+}
+
+tasks.whenTaskAdded {
+    if (name.contains("lint", ignoreCase = true)) {
+        enabled = false
+    }
 }

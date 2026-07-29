@@ -1198,7 +1198,7 @@ HSPLandroidx/compose/foundation/layout/a;-><clinit>()V
 HSPLandroidx/compose/foundation/layout/a;->a()LJ/o;
 Lo/n;
 HSPLo/n;-><clinit>()V
-HSPLo/n;->a(LJ/e;Lx/m;)LZ/A;
+HSPLo/n;->a(Lo/e;LJ/e;Lx/m;)LZ/A;
 Lo/o;
 HSPLo/o;->a()LJ/o;
 Lo/p;
@@ -1257,7 +1257,7 @@ HSPLo/w;->toString()Ljava/lang/String;
 Lo/x;
 HSPLo/x;-><init>(III[I)V
 Lo/y;
-HSPLo/y;-><init>(ILo/d;Lo/a;FLe1/a;)V
+HSPLo/y;-><init>(ILo/d;Lo/e;FLe1/a;)V
 HSPLo/y;->equals(Ljava/lang/Object;)Z
 HSPLo/y;->hashCode()I
 HSPLo/y;->a(LZ/C;Ljava/util/List;J)LZ/B;
